@@ -27,16 +27,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font intTitleFont;
 	Font intTextFont;
 	Player player;
-	
+	ObjectManager manager;
 
 	GamePanel() {
-		player = new Player(50,500,125,75,10,true,true);
+		player = new Player(50, 525, 125, 75, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
 		frameRate = new Timer(1000 / 60, this);
 		frameRate.start();
+		manager = new ObjectManager(player);
 		if (needImage) {
-			loadImage("Test.png");
+			loadImage("Test2.png");
 		}
 	}
 
@@ -57,21 +58,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setFont(intTitleFont);
 		g.setColor(Color.WHITE);
-		g.drawString("How To Play", 400,225);
+		g.drawString("How To Play", 400, 225);
 		g.setFont(intTextFont);
-		g.drawString("       To move you must use the a and s keys or the left and right arrow keys. To " , 75, 350);
+		g.drawString("       To move you must use the a and s keys or the left and right arrow keys. To ", 75, 350);
 
-		g.drawString("jump simply press space. Your goal is to reach the door at the end of the level and" , 75, 425);
-		g.drawString("presss the up arrow or w. There are obstacles such as projectiles, gaps in the floor" , 75, 500);
-		g.drawString("and fire. You have 3 attempts to see how far you can go. There are a total of ___levels!" , 75, 575);
-		  
-		 
+		g.drawString("jump simply press space. Your goal is to reach the door at the end of the level and", 75, 425);
+		g.drawString("presss the up arrow or w. There are obstacles such as projectiles, gaps in the floor", 75, 500);
+		g.drawString("and fire. You have 3 attempts to see how far you can go. There are a total of ___levels!", 75,
+				575);
+
 	}
 
 	void drawLevelIState(Graphics g) {
+	
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
-player.draw(g);
+		g.setColor(Color.blue);
+		g.fillRect(300, 600, 100, 100);
+		g.fillRect(800, 600, 300, 150);
+		player.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
@@ -79,15 +84,18 @@ player.draw(g);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 
 	}
-	void updateMenuState(){
-	
-	}
-void updateLevelIState(){
-	player.update();
-}
-void updateEndState(){
 
-}
+	void updateMenuState() {
+
+	}
+
+	void updateLevelIState() {
+  manager.update();
+	}
+
+	void updateEndState() {
+
+	}
 
 	void loadImage(String imageFile) {
 		if (needImage) {
@@ -120,13 +128,13 @@ void updateEndState(){
 		if (currentState == MENU) {
 			updateMenuState();
 		} else if (currentState == LEVEL) {
-		
+
 			updateLevelIState();
 		} else if (currentState == END) {
 			updateEndState();
 		}
 		repaint();
-	
+
 	}
 
 	@Override
@@ -142,33 +150,32 @@ void updateEndState(){
 			if (currentState == MENU) {
 				currentState++;
 
-			}
-			else if (currentState == INT) {
+			} else if (currentState == INT) {
 				currentState++;
 			}
 		}
-	
 
-	if (e.getKeyCode() == KeyEvent.VK_LEFT ) {
-	
-		player.left();
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+			player.left();
+
+		}
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+
+			player.right();
+		}
+		if (e.getKeyCode() == KeyEvent.VK_SPACE && !player.ifAir) {
+
+			player.jump();
+
+		}
 
 	}
-	if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		
-		player.right();
-	}
-	if (e.getKeyCode() == KeyEvent.VK_SPACE&&!player.ifAir) {
-		
-		player.jump();
-		
-	}
 
-	}
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-if(!(e.getKeyCode() == KeyEvent.VK_SPACE))
-			player.xspeed =0;
+		if (!(e.getKeyCode() == KeyEvent.VK_SPACE))
+			player.xspeed = 0;
 	}
 }

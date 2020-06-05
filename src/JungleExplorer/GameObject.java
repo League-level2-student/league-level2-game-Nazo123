@@ -1,5 +1,7 @@
 package JungleExplorer;
 
+import java.awt.Rectangle;
+
 public class GameObject {
 	int x;
 	int y;
@@ -8,6 +10,7 @@ public class GameObject {
 	int speed;
 	boolean isVisable;
 	boolean isAlive;
+	Rectangle collisionBox;
 
 	GameObject(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		this.isAlive = isAlive;
