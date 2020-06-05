@@ -19,11 +19,12 @@ public ObjectManager(Player player) {
 		if (!checkHittingHead()) {
 			if (!checkStanding()){
 				player.ifAir = false;
+			
 				checkWall();
 			}
 			else {
 				player.ifAir = true;
-				
+		
 			}
 		}
 	
@@ -53,7 +54,7 @@ public ObjectManager(Player player) {
 	
 	boolean checkHittingHead() {
 		hittingHead = false;
-		for (int i = 0; i<1; i++) {
+		for (int i = 0; i<0; i++) {
 		if(player.playerHitBox.intersects(lvls.get(0).get(i).get(0))) {
 		
 			player.yvelocity = 0;
@@ -90,7 +91,7 @@ public ObjectManager(Player player) {
 		ArrayList<ArrayList<Rectangle>> levelI = new ArrayList<ArrayList<Rectangle>>();
 		
 		levelI.add(b.createBox(300, 600, 100, 100));
-		levelI.add(b.createBox(800, 600, 300, 150));
+
 		
 		return levelI;
 	}
