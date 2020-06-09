@@ -75,7 +75,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setColor(Color.blue);
 		g.fillRect(300, 600, 100, 100);
-		g.fillRect(800, 600, 300, 150);
+		g.fillRect(0, 700, 1400, 100);
+		
 		player.draw(g);
 	}
 

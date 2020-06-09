@@ -12,9 +12,10 @@ public class Box {
 	int height;
 
 	
-	ArrayList<Rectangle> theBox = new ArrayList<Rectangle>();
+	ArrayList<Rectangle> theBox;
 
 	ArrayList<Rectangle> createBox(int x, int y, int width, int height) {
+		theBox = new ArrayList<Rectangle>();
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -30,7 +31,7 @@ public class Box {
 
 	Rectangle createRoof() {
 
-		Rectangle roof = new Rectangle(x + 25, y, width - 35, 20);
+		Rectangle roof = new Rectangle(x + 25, y, width - 25, 20);
 
 		return roof;
 	}
@@ -43,7 +44,7 @@ public class Box {
 
 	Rectangle createCealing() {
 
-		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-35, 20);
+		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-25, 20);
 
 		return cealing;
 	}

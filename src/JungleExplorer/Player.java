@@ -19,7 +19,7 @@ public class Player extends GameObject {
 	public int yvelocity = 0;
 	int yspeed = 0;
 	int xspeed = 0;
-	boolean ifAir;
+	boolean ifAir = true;
 	boolean facingRight = true;
 	int x;
 	int y;
@@ -32,6 +32,7 @@ public class Player extends GameObject {
 
 	Player(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		super(x, y, height, width, speed, isVisable, isAlive);
+		playerHitBox = new Rectangle(x,y,width,height);
 		this.x = x;
 		this.y = y;
 		this.height = height;
@@ -136,13 +137,7 @@ public class Player extends GameObject {
 	void update() {
 
 		adjustSpeed();
-		if (y < 600) {
-			ifAir = true;
 	
-
-		} else {
-			ifAir = false;
-		}
 
 		x += xspeed;
 		y += yvelocity;
@@ -154,7 +149,7 @@ public class Player extends GameObject {
 			yvelocity = yvelocity + 4;
 		}
 
-		playerHitBox = new Rectangle(x,y,width,height);
+		playerHitBox.setBounds(x, y, width, height);
 
 	}
 
