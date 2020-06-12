@@ -21,8 +21,8 @@ public class Box {
 		this.width = width;
 		this.height = height;
 		theBox.add(createCealing());
-		theBox.add(createWalls());
 		theBox.add(createRoof());
+		theBox.add(createRightWalls());
 	
 		
 		return theBox;
@@ -31,21 +31,26 @@ public class Box {
 
 	Rectangle createRoof() {
 
-		Rectangle roof = new Rectangle(x + 25, y, width - 25, 20);
+		Rectangle roof = new Rectangle(x + 25, y, width - 35, 5);
 
 		return roof;
 	}
 
-	Rectangle createWalls() {
+	Rectangle createLeftWalls() {
 
-		Rectangle wall = new Rectangle(x, y + 20, width, height - 20);
-		return wall;
+		Rectangle leftWall = new Rectangle(x, y + 20, width/2, height - 20);
+		return leftWall;
 	}
 
 	Rectangle createCealing() {
 
-		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-25, 20);
+		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-35, 5);
 
 		return cealing;
+	}
+	Rectangle createRightWalls() {
+
+		Rectangle rightWall = new Rectangle(x+width/2, y + 20, width/2, height - 20);
+		return rightWall;
 	}
 }

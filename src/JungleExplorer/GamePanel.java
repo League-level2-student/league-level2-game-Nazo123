@@ -3,6 +3,7 @@ package JungleExplorer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,19 +19,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;
+	public static BufferedImage himage;
+	public static boolean hneedImage = true;
+	public static boolean hgotImage = false;
 	final int MENU = 0;
 	final int INT = 1;
-	final int LEVEL = 2;
-	final int END = 3;
+	final int LEVELI = 2;
+	final int LEVELII = 3;
+	final int LEVELIII = 4;
+	final int END = 5;
 	int currentState = MENU;
 	Timer frameRate;
 	Font intTitleFont;
 	Font intTextFont;
 	Player player;
 	ObjectManager manager;
+	Rectangle door = new Rectangle(100, 75, 100, 150);
 
 	GamePanel() {
-		player = new Player(50, 525, 125, 75, 10, true, true);
+		player = new Player(50, 525, 120, 70, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
 		frameRate = new Timer(1000 / 60, this);
@@ -38,6 +45,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		manager = new ObjectManager(player);
 		if (needImage) {
 			loadImage("Test2.png");
+		}
+		if (hneedImage) {
+			hloadImage("Health.png");
 		}
 	}
 
@@ -73,9 +83,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
-		g.setColor(Color.blue);
-		g.fillRect(300, 600, 100, 100);
-		g.fillRect(0, 700, 1400, 100);
+		g.setColor(Color.yellow);
+		g.fillRect(100, 75, 100, 150);
+		g.setColor(Color.GREEN);
+		
+		g.fillRect(300, 600, 150, 100);
+		g.fillRect(0, 700, 450, 100);
+		g.fillRect(-20, 0, 50, 900);
+		g.fillRect(1370, 0, 50, 900);
+		g.fillRect(650, 600, 525, 200);
+		g.fillRect(1250,475,120,75);
+		g.fillRect(0, 0, 1400,30);
+		g.fillRect(725, 350, 350, 50);
+		g.fillRect(0, 300, 525, 50);
+		g.fillRect(0, 250, 425, 50);
+		g.fillRect(0, 200, 325, 50);
+		for (int i =0;i<player.health;i++) {
+			g.drawImage(himage, 1275-100*i, 60, 75,75, null);
+			}
 		
 		player.draw(g);
 	}
@@ -92,6 +117,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	void updateLevelIState() {
   manager.update();
+  if(player.lose) {
+	  currentState = END;
+  }
 	}
 
 	void updateEndState() {
@@ -108,6 +136,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			needImage = false;
 		}
+	}	void hloadImage(String himageFile) {
+		if (hneedImage) {
+			try {
+				himage = ImageIO.read(this.getClass().getResourceAsStream(himageFile));
+				hgotImage = true;
+			} catch (Exception e) {
+
+			}
+			hneedImage = false;
+		}
 	}
 
 	@Override
@@ -116,7 +154,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawMenuState(g);
 		} else if (currentState == INT) {
 			drawIntState(g);
-		} else if (currentState == LEVEL) {
+		} else if (currentState == LEVELI) {
 			drawLevelIState(g);
 		} else if (currentState == END) {
 			drawEndState(g);
@@ -128,7 +166,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		if (currentState == MENU) {
 			updateMenuState();
-		} else if (currentState == LEVEL) {
+		} else if (currentState == LEVELI) {
 
 			updateLevelIState();
 		} else if (currentState == END) {
@@ -147,6 +185,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if(e.getKeyCode()==KeyEvent.VK_UP&&door.intersects(player.playerHitBox)) {
+			currentState++;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU) {
 				currentState++;
@@ -156,12 +197,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT&&manager.noLeft == false) {
 
 			player.left();
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT&&manager.noRight == false) {
 
 			player.right();
 		}
@@ -176,7 +217,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (!(e.getKeyCode() == KeyEvent.VK_SPACE))
-			player.xspeed = 0;
+		if ((e.getKeyCode() == KeyEvent.VK_RIGHT)){
+			player.rightSpeed = 0;
+		}
+		
+	
+	 if (e.getKeyCode() == KeyEvent.VK_LEFT){
+		player.leftSpeed=0;
+	}
 	}
 }

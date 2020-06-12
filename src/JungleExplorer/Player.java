@@ -18,9 +18,11 @@ public class Player extends GameObject {
 	public static boolean agotImage = false;
 	public int yvelocity = 0;
 	int yspeed = 0;
-	int xspeed = 0;
+	int rightSpeed = 0;
+	int leftSpeed = 0;
 	boolean ifAir = true;
 	boolean facingRight = true;
+	public boolean lose = false;
 	int x;
 	int y;
 	int height;
@@ -29,6 +31,8 @@ public class Player extends GameObject {
 	boolean isVisable;
 	boolean isAlive;
 	Rectangle playerHitBox;
+	public static int health = 3;
+	
 
 	Player(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		super(x, y, height, width, speed, isVisable, isAlive);
@@ -53,14 +57,14 @@ public class Player extends GameObject {
 	void draw(Graphics g) {
 		if (facingRight) {
 			if (gotImage) {
-				g.drawImage(image, x, y, width, height, null);
+				g.drawImage(image, x, y, width+5, height+5, null);
 			} else {
 				g.setColor(Color.BLUE);
 				g.fillRect(x, y, width, height);
 			}
 		} else {
 			if (agotImage) {
-				g.drawImage(aimage, x, y, width, height, null);
+				g.drawImage(aimage, x, y, width+5, height+5, null);
 			} else {
 				g.setColor(Color.BLUE);
 				g.fillRect(x, y, width, height);
@@ -95,35 +99,35 @@ public class Player extends GameObject {
 	public void left() {
 		facingRight = false;
 		if (ifAir) {
-			xspeed = -speed * 4 / 3;
+			leftSpeed = -speed * 4 / 3;
 		} else {
-			xspeed = -speed;
+			leftSpeed = -speed;
 		}
 	}
 
 	public void right() {
 		facingRight = true;
 		if (ifAir) {
-			xspeed = speed * 4 / 3;
+			rightSpeed = speed * 4 / 3;
 		} else {
-			xspeed = speed;
+			rightSpeed = speed;
 		}
 	}
 
 	public void adjustSpeed() {
 		if (ifAir) {
-			if (xspeed < 0) {
-				xspeed = -speed * 4 / 3;
-			} else if (xspeed > 0) {
-				xspeed = speed * 4 / 3;
+			if (leftSpeed < 0) {
+				leftSpeed = -speed * 4 / 3;
+			} else if (rightSpeed > 0) {
+				rightSpeed = speed * 4 / 3;
 			}
 
 		} else {
-
-			if (xspeed < 0) {
-				xspeed = -speed;
-			} else if (xspeed > 0) {
-				xspeed = speed;
+			if (leftSpeed < 0) {
+				leftSpeed = -speed;
+			}
+			else if (rightSpeed > 0) {
+				rightSpeed = speed;
 			}
 
 		}
@@ -139,7 +143,7 @@ public class Player extends GameObject {
 		adjustSpeed();
 	
 
-		x += xspeed;
+		x += rightSpeed+leftSpeed;
 		y += yvelocity;
 		if (yvelocity == 0 & ifAir) {
 			y = y + 12;
@@ -150,6 +154,14 @@ public class Player extends GameObject {
 		}
 
 		playerHitBox.setBounds(x, y, width, height);
+		if(y>700) {
+			x = 100;
+			y = 400;
+			health--;
+		}
+		if(health == 0) {
+			lose = true;
+		}
 
 	}
 
