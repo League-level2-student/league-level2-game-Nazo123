@@ -21,6 +21,7 @@ public class Box {
 		this.width = width;
 		this.height = height;
 		theBox.add(createCealing());
+		theBox.add(createLeftWalls());
 		theBox.add(createRoof());
 		theBox.add(createRightWalls());
 	
