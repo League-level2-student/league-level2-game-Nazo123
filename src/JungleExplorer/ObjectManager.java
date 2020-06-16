@@ -24,6 +24,8 @@ public class ObjectManager {
 	void update() {
 	    
 		if (!checkHittingHead()) {
+			checkLeftWall();
+			checkRightWall();
 			if (!checkStanding()) {
 				if(stand == true) System.out.println("Not standing");
                 stand = false;
@@ -37,8 +39,7 @@ public class ObjectManager {
 			
 		}
 	checkStanding();
-	checkLeftWall();
-		checkRightWall();
+
 	
 
 		player.update();
@@ -61,9 +62,12 @@ public class ObjectManager {
 		//		e.printStackTrace();
 		//	}
 			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(2))) {
-			
+	
 
 				standing = true;
+				while(player.y+125>lvls.get(0).get(i).get(2).y+1) {
+					player.y--;
+				}
 				break;
 
 			}
@@ -83,7 +87,9 @@ public class ObjectManager {
 			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0))) {
 
 				player.yvelocity = 0;
-
+				while(player.y<lvls.get(0).get(i).get(0).y-1) {
+					player.y++;
+				}
 				hittingHead = true;
 				break;
 			}

@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Rectangle door = new Rectangle(100, 75, 100, 150);
 
 	GamePanel() {
-		player = new Player(50, 525, 120, 70, 10, true, true);
+		player = new Player(50, 525, 125, 75, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
 		frameRate = new Timer(1000 / 60, this);
@@ -98,6 +98,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 300, 525, 50);
 		g.fillRect(0, 250, 425, 50);
 		g.fillRect(0, 200, 325, 50);
+		
 		for (int i =0;i<player.health;i++) {
 			g.drawImage(himage, 1275-100*i, 60, 75,75, null);
 			}

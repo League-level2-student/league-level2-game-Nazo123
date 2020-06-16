@@ -32,26 +32,26 @@ public class Box {
 
 	Rectangle createRoof() {
 
-		Rectangle roof = new Rectangle(x + 25, y, width - 35, 5);
+		Rectangle roof = new Rectangle(x + 25, y, width - 35, height/5);
 
 		return roof;
 	}
 
 	Rectangle createLeftWalls() {
 
-		Rectangle leftWall = new Rectangle(x, y + 20, width/2, height - 20);
+		Rectangle leftWall = new Rectangle(x, y+height/5*2, width/2, height - height/5*2);
 		return leftWall;
 	}
 
 	Rectangle createCealing() {
 
-		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-35, 5);
+		Rectangle cealing = new Rectangle(x + 25, y + height - 20, width-35, height/5);
 
 		return cealing;
 	}
 	Rectangle createRightWalls() {
 
-		Rectangle rightWall = new Rectangle(x+width/2, y + 20, width/2, height - 20);
+		Rectangle rightWall = new Rectangle(x+width/2, y +height/5*2, width/2, height - height/5*2);
 		return rightWall;
 	}
 }

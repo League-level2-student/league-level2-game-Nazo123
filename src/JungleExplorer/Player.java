@@ -23,8 +23,8 @@ public class Player extends GameObject {
 	boolean ifAir = true;
 	boolean facingRight = true;
 	public boolean lose = false;
-	int x;
-	int y;
+	static int x;
+	static int y;
 	int height;
 	int width;
 	int speed;
@@ -57,14 +57,14 @@ public class Player extends GameObject {
 	void draw(Graphics g) {
 		if (facingRight) {
 			if (gotImage) {
-				g.drawImage(image, x, y, width+5, height+5, null);
+				g.drawImage(image, x, y, width, height, null);
 			} else {
 				g.setColor(Color.BLUE);
 				g.fillRect(x, y, width, height);
 			}
 		} else {
 			if (agotImage) {
-				g.drawImage(aimage, x, y, width+5, height+5, null);
+				g.drawImage(aimage, x, y, width, height, null);
 			} else {
 				g.setColor(Color.BLUE);
 				g.fillRect(x, y, width, height);
@@ -161,8 +161,8 @@ public class Player extends GameObject {
 		}
 		if(health == 0) {
 			lose = true;
-		}
-
+		} 
+  
 	}
 
 }
