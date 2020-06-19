@@ -123,9 +123,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.GREEN);
 
 		g.fillRect(0, 700, 400, 50);
-		g.fillRect(400, 550, 100, 200);
-		g.fillRect(900, 600, 100, 100);
-
+		g.fillRect(400, 575, 100, 200);
+		g.fillRect(900, 550, 100, 200);
+		g.fillRect(400, 700, 500, 50);
+		g.setColor(Color.gray);
+		g.fillRect(900, 620, 20, 30);
+		
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
@@ -248,7 +251,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			manager.lvls.remove(0);
 			if (currentState == LEVELII) {
 				manager.lvls.add(manager.createLevelII());
-				launchers.add(new projectileLauncher(900, 600, 100, 100, 3, 20));
+				launchers.add(new projectileLauncher(900, 620, 20, 30, 3, 20));
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {

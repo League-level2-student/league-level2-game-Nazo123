@@ -28,7 +28,7 @@ public class projectileLauncher {
 			return new Projectile(x + width / 2, y, 20, 80, speed, true, true, 2);
 		}
 		if (direction == 3) {
-			return new Projectile(x - 80, y + height / 2 + 40, 80, 20, speed, true, true, 3);
+			return new Projectile(x - 80, y + height / 2+10 , 80, 20, speed, true, true, 3);
 		}
 		return null;
 

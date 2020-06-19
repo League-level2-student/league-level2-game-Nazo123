@@ -88,9 +88,9 @@ public class Projectile extends GameObject {
 		if (direction == 3) {
 			x -= speed;
 		}
-		hitBox.setBounds(x, y, width, height);
+	
 		super.update();
-
+		hitBox.setBounds(x, y, width, height);
 	}
 
 	void uloadImage(String imageFile) {

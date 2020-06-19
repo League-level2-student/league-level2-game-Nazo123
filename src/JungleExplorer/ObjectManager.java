@@ -184,7 +184,8 @@ public class ObjectManager {
 		ArrayList<ArrayList<Rectangle>> levelII = new ArrayList<ArrayList<Rectangle>>();
 
 		levelII.add(b.createBox(0, 700, 400, 50));
-		levelII.add(b.createBox(400, 550, 100, 200));
+		levelII.add(b.createBox(400, 575, 100, 200));
+		levelII.add(b.createBox(400, 700, 500, 50));
 
 		return levelII;
 	}
