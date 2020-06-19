@@ -8,17 +8,18 @@ public class JungleExplorer {
 	public final static int HEIGHT = 750;
 	GamePanel gamePanel;
 	JFrame frame;
+
 	public static void main(String[] args) {
 
 		JungleExplorer e = new JungleExplorer();
-		
+
 		e.setup();
 
 	}
 
-	 JungleExplorer() {
-	frame = new JFrame();
-gamePanel = new GamePanel();
+	JungleExplorer() {
+		frame = new JFrame();
+		gamePanel = new GamePanel();
 	}
 
 	void setup() {
@@ -29,5 +30,5 @@ gamePanel = new GamePanel();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
-	
+
 }

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -16,12 +17,17 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
+	ArrayList<projectileLauncher> launchers = new ArrayList<projectileLauncher>();
+	public static BufferedImage aimage;
+	public static boolean aneedImage = true;
+	public static boolean agotImage = false;
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;
 	public static BufferedImage himage;
 	public static boolean hneedImage = true;
 	public static boolean hgotImage = false;
+	Timer bulletTimer;
 	final int MENU = 0;
 	final int INT = 1;
 	final int LEVELI = 2;
@@ -41,6 +47,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
 		frameRate = new Timer(1000 / 60, this);
+		bulletTimer = new Timer(2000, this);
 		frameRate.start();
 		manager = new ObjectManager(player);
 		if (needImage) {
@@ -49,6 +56,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (hneedImage) {
 			hloadImage("Health.png");
 		}
+
 	}
 
 	void drawMenuState(Graphics g) {
@@ -80,30 +88,54 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawLevelIState(Graphics g) {
-	
+
 		g.setColor(Color.RED);
-		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+		g.drawImage(aimage, 0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT, null);
 		g.setColor(Color.yellow);
 		g.fillRect(100, 75, 100, 150);
 		g.setColor(Color.GREEN);
-		
+
 		g.fillRect(300, 600, 150, 100);
 		g.fillRect(0, 700, 450, 100);
 		g.fillRect(-20, 0, 50, 900);
 		g.fillRect(1370, 0, 50, 900);
 		g.fillRect(650, 600, 525, 200);
-		g.fillRect(1250,475,120,75);
-		g.fillRect(0, 0, 1400,30);
+		g.fillRect(1250, 475, 120, 75);
+		g.fillRect(0, 0, 1400, 30);
 		g.fillRect(725, 350, 350, 50);
 		g.fillRect(0, 300, 525, 50);
 		g.fillRect(0, 250, 425, 50);
 		g.fillRect(0, 200, 325, 50);
-		
-		for (int i =0;i<player.health;i++) {
-			g.drawImage(himage, 1275-100*i, 60, 75,75, null);
-			}
-		
+
+		for (int i = 0; i < player.health; i++) {
+			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
+		}
+
 		player.draw(g);
+	}
+
+	void drawLevelIIState(Graphics g) {
+
+		g.setColor(Color.RED);
+		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+		g.setColor(Color.yellow);
+		g.fillRect(100, 75, 100, 150);
+		g.setColor(Color.GREEN);
+
+		g.fillRect(0, 700, 400, 50);
+		g.fillRect(400, 550, 100, 200);
+		g.fillRect(900, 600, 100, 100);
+
+		for (int i = 0; i < player.health; i++) {
+			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
+		}
+
+		player.draw(g);
+		for (int i = 0; i < manager.projectile.size(); i++) {
+			manager.projectile.get(i).draw(g);
+		
+
+		}
 	}
 
 	void drawEndState(Graphics g) {
@@ -117,10 +149,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateLevelIState() {
-  manager.update();
-  if(player.lose) {
-	  currentState = END;
-  }
+
+		manager.update();
+		if (player.lose) {
+			currentState = END;
+		}
+	}
+
+	void updateLevelIIState() {
+		manager.update();
+		if (player.lose) {
+			currentState = END;
+		}
 	}
 
 	void updateEndState() {
@@ -137,7 +177,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 			needImage = false;
 		}
-	}	void hloadImage(String himageFile) {
+	}
+
+	void hloadImage(String himageFile) {
 		if (hneedImage) {
 			try {
 				himage = ImageIO.read(this.getClass().getResourceAsStream(himageFile));
@@ -157,23 +199,38 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawIntState(g);
 		} else if (currentState == LEVELI) {
 			drawLevelIState(g);
+		} else if (currentState == LEVELII) {
+			drawLevelIIState(g);
 		} else if (currentState == END) {
 			drawEndState(g);
 		}
 	}
 
+	int counter = 0;
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub'
+
 		if (currentState == MENU) {
 			updateMenuState();
 		} else if (currentState == LEVELI) {
 
 			updateLevelIState();
+		} else if (currentState == LEVELII) {
+			updateLevelIIState();
 		} else if (currentState == END) {
 			updateEndState();
 		}
 		repaint();
+		counter++;
+
+		if (counter > 120) {
+			for (int i = 0; i < launchers.size(); i++) {
+				manager.addProjectile(launchers.get(i).getProjectile());
+			}
+			counter = 0;
+		}
 
 	}
 
@@ -186,8 +243,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()==KeyEvent.VK_UP&&door.intersects(player.playerHitBox)) {
+		if (e.getKeyCode() == KeyEvent.VK_UP && door.intersects(player.playerHitBox)) {
 			currentState++;
+			manager.lvls.remove(0);
+			if (currentState == LEVELII) {
+				manager.lvls.add(manager.createLevelII());
+				launchers.add(new projectileLauncher(900, 600, 100, 100, 3, 20));
+			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU) {
@@ -198,12 +260,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT&&manager.noLeft == false) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT && manager.noLeft == false) {
 
 			player.left();
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT&&manager.noRight == false) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT && manager.noRight == false) {
 
 			player.right();
 		}
@@ -218,13 +280,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if ((e.getKeyCode() == KeyEvent.VK_RIGHT)){
+		if ((e.getKeyCode() == KeyEvent.VK_RIGHT)) {
 			player.rightSpeed = 0;
 		}
-		
-	
-	 if (e.getKeyCode() == KeyEvent.VK_LEFT){
-		player.leftSpeed=0;
-	}
+
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			player.leftSpeed = 0;
+		}
 	}
 }

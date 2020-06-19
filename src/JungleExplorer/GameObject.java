@@ -23,8 +23,7 @@ public class GameObject {
 
 	}
 
-void update() {
-	
-}
-}
+	void update() {
 
+	}
+}
