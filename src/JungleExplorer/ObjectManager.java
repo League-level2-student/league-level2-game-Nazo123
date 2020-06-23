@@ -184,8 +184,16 @@ public class ObjectManager {
 		ArrayList<ArrayList<Rectangle>> levelII = new ArrayList<ArrayList<Rectangle>>();
 
 		levelII.add(b.createBox(0, 700, 400, 50));
-		levelII.add(b.createBox(400, 575, 100, 200));
+		levelII.add(b.createBox(400, 600, 100, 200));
 		levelII.add(b.createBox(400, 700, 500, 50));
+		levelII.add(b.createBox(900, 620, 130, 200));
+		levelII.add(b.createBox(1000,700,400,50));
+		levelII.add(b.createBox(0, 0, 1400, 30));
+		levelII.add(b.createBox(0, 0, 30, 700));
+		levelII.add(b.createBox(1370, 0, 30, 700));
+levelII.add(b.createBox(1300, 575, 100, 125));
+levelII.add(b.createBox(1100, 425, 50, 50));
+levelII.add(b.createBox(1330, 300, 50, 50));
 
 		return levelII;
 	}
@@ -196,16 +204,21 @@ public class ObjectManager {
 				projectile.remove(q);
 			}
 		}
+		for (int w = 0; w<projectile.size(); w++) {
+			if (projectile.get(w).y<-80) {
+				projectile.remove(w);
+			}
+		}
 		for (int i = 0; i < projectile.size(); i++) {
 			if (projectile.get(i).hitBox.intersects(player.playerHitBox)) {
 				projectile.remove(i);
 				player.health--;
 				player.x = 100;
 				player.y = 400;
+				projectile.clear();
 			}
 			
 			for (int a = 0; a < projectile.size(); a++) {
-				System.out.println(projectile.get(i).x+" "+projectile.get(i).y);
 				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(a).get(3))) {
 					System.out.println("test");
 					projectile.remove(a);

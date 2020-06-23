@@ -121,13 +121,23 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.yellow);
 		g.fillRect(100, 75, 100, 150);
 		g.setColor(Color.GREEN);
-
+		
 		g.fillRect(0, 700, 400, 50);
-		g.fillRect(400, 575, 100, 200);
-		g.fillRect(900, 550, 100, 200);
+		g.fillRect(400, 600, 100, 200);
+		g.fillRect(900, 620, 130, 200);
 		g.fillRect(400, 700, 500, 50);
+		g.fillRect(1000,700,400,50);
+		g.fillRect(0, 0, 1400, 30);
+		g.fillRect(0, 0, 30, 700);
+		g.fillRect(1370, 0, 30, 700);
+		g.fillRect(1300, 575, 100, 125);
+		g.fillRect(1100	, 425, 50, 50);
+		g.fillRect(1330	, 300, 50, 50);
+		
+
 		g.setColor(Color.gray);
-		g.fillRect(900, 620, 20, 30);
+		g.fillRect(900, 650, 20, 30);
+		g.fillRect(1175, 700, 30, 20);
 		
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
@@ -251,7 +261,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			manager.lvls.remove(0);
 			if (currentState == LEVELII) {
 				manager.lvls.add(manager.createLevelII());
-				launchers.add(new projectileLauncher(900, 620, 20, 30, 3, 20));
+				launchers.add(new projectileLauncher(900, 650, 20, 30, 3, 12));
+				launchers.add(new projectileLauncher(1175, 700, 30, 20, 2, 12));
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
