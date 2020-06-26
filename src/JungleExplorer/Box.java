@@ -30,7 +30,7 @@ public class Box {
 
 	Rectangle createRoof() {
 
-		Rectangle roof = new Rectangle(x , y, width, height/5 );
+		Rectangle roof = new Rectangle(x+6 , y, width-12, height/5 );
 
 		return roof;
 	}
@@ -43,7 +43,7 @@ public class Box {
 
 	Rectangle createCealing() {
 
-		Rectangle cealing = new Rectangle(x , y+height-(height/5) , width , height / 5);
+		Rectangle cealing = new Rectangle(x+6 , y+height-(height/5) , width-12 , height / 5);
 
 		return cealing;
 	}

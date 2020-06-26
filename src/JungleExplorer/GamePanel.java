@@ -121,7 +121,6 @@ manager.draw(g);
 		g.setColor(Color.yellow);
 		g.fillRect(100, 75, 100, 150);
 		g.setColor(Color.GREEN);
-		manager.draw(g);
 		/*
 		g.fillRect(0, 700, 400, 50);
 		g.fillRect(400, 600, 100, 200);
@@ -135,7 +134,7 @@ manager.draw(g);
 		g.fillRect(1100	, 425, 50, 50);
 		g.fillRect(1330	, 300, 50, 50);
 		*/
-
+		manager.draw(g);
 		g.setColor(Color.gray);
 		g.fillRect(900, 650, 20, 30);
 		g.fillRect(1175, 700, 30, 20);
