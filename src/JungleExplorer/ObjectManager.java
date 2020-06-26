@@ -1,5 +1,6 @@
 package JungleExplorer;
 
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ public class ObjectManager {
 	}
 
 	void update() {
-
+		checkRightWall();
+		checkLeftWall();
 		if (!checkHittingHead()) {
-			checkLeftWall();
-			checkRightWall();
+		
+		
 			if (!checkStanding()) {
 				if (stand == true)
 					System.out.println("Not standing");
@@ -113,6 +115,18 @@ public class ObjectManager {
 
 	boolean hittingWall = false;
 
+	void draw(Graphics g) {
+		for(int i = 0; i<projectile.size();i++) {
+			projectile.get(i).draw(g);
+			
+		}
+		for(int i = 0; i<lvls.get(0).size();i++) {
+			for(int k = 0; k<lvls.get(0).get(k).size();k++) {
+				Rectangle r = lvls.get(0).get(i).get(k);
+				g.drawRect(r.x,r.y,r.width,r.height);
+			}
+		}
+	}
 	boolean checkLeftWall() {
 		hittingWall = false;
 		noRight = false;
@@ -216,11 +230,14 @@ levelII.add(b.createBox(1330, 300, 50, 50));
 				player.x = 100;
 				player.y = 400;
 				projectile.clear();
-			}
+		}
+		}
 			
 			for (int a = 0; a < projectile.size(); a++) {
+				System.out.println(projectile.get(a).x+", "+projectile.get(a).y+"    "+lvls.get(0).get(a).get(3).x+", "+lvls.get(0).get(a).get(3).y);
 				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(a).get(3))) {
 					System.out.println("test");
+					
 					projectile.remove(a);
 
 				}
@@ -248,4 +265,4 @@ levelII.add(b.createBox(1330, 300, 50, 50));
 
 	}
 
-}
+

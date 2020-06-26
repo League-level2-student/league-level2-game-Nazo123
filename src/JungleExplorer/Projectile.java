@@ -58,20 +58,20 @@ public class Projectile extends GameObject {
 
 	void draw(Graphics g) {
 		if (direction == 0) {
-			g.drawImage(dimage, x, y, width, height, null);
-
+			//g.drawImage(dimage, x, y, width, height, null);
+g.drawRect(x, y, width, height);
 		}
 		if (direction == 1) {
-			g.drawImage(rimage, x, y, width, height, null);
-
+			//g.drawImage(rimage, x, y, width, height, null);
+			g.drawRect(x, y, width, height);
 		}
 		if (direction == 2) {
-			g.drawImage(uimage, x, y, width, height, null);
-
+			//g.drawImage(uimage, x, y, width, height, null);
+			g.drawRect(x, y, width, height);
 		}
 		if (direction == 3) {
-			g.drawImage(limage, x, y, width, height, null);
-
+			//g.drawImage(limage, x, y, width, height, null);
+			g.drawRect(x, y, width, height);
 		}
 	}
 
