@@ -27,6 +27,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage himage;
 	public static boolean hneedImage = true;
 	public static boolean hgotImage = false;
+	public static int counter = 0;
 	Timer bulletTimer;
 	final int MENU = 0;
 	final int INT = 1;
@@ -94,7 +95,7 @@ manager.draw(g);
 		g.setColor(Color.yellow);
 		g.fillRect(100, 75, 100, 150);
 		g.setColor(Color.GREEN);
-/*
+
 		g.fillRect(300, 600, 150, 100);
 		g.fillRect(0, 700, 450, 100);
 		g.fillRect(-20, 0, 50, 900);
@@ -106,7 +107,7 @@ manager.draw(g);
 		g.fillRect(0, 300, 525, 50);
 		g.fillRect(0, 250, 425, 50);
 		g.fillRect(0, 200, 325, 50);
-*/
+
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
@@ -121,7 +122,8 @@ manager.draw(g);
 		g.setColor(Color.yellow);
 		g.fillRect(100, 75, 100, 150);
 		g.setColor(Color.GREEN);
-		/*
+		
+		
 		g.fillRect(0, 700, 400, 50);
 		g.fillRect(400, 600, 100, 200);
 		g.fillRect(900, 620, 130, 200);
@@ -132,13 +134,18 @@ manager.draw(g);
 		g.fillRect(1370, 0, 30, 700);
 		g.fillRect(1300, 575, 100, 125);
 		g.fillRect(1100	, 425, 50, 50);
-		g.fillRect(1330	, 300, 50, 50);
-		*/
-		manager.draw(g);
+		g.fillRect(1320, 320, 50, 50);
+		g.fillRect(1000	, 180, 150, 50);
+		g.fillRect(0, 220, 1150, 60);
+		
+	
 		g.setColor(Color.gray);
 		g.fillRect(900, 650, 20, 30);
 		g.fillRect(1175, 700, 30, 20);
-		
+		g.fillRect(225, 220, 30, 20);
+		g.fillRect(491, 220, 30, 20);
+		g.fillRect(758, 220, 30, 20);
+	
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
@@ -219,7 +226,7 @@ manager.draw(g);
 		}
 	}
 
-	int counter = 0;
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -238,11 +245,12 @@ manager.draw(g);
 		repaint();
 		counter++;
 
-		if (counter > 120) {
+		
 			for (int i = 0; i < launchers.size(); i++) {
+				if(counter%launchers.get(i).rate==0) {
 				manager.addProjectile(launchers.get(i).getProjectile());
 			}
-			counter = 0;
+	
 		}
 
 	}
@@ -260,9 +268,15 @@ manager.draw(g);
 			currentState++;
 			manager.lvls.remove(0);
 			if (currentState == LEVELII) {
+				player.x = 100;
+				player.y = 400;
 				manager.lvls.add(manager.createLevelII());
-				launchers.add(new projectileLauncher(900, 650, 20, 30, 3, 12));
-				launchers.add(new projectileLauncher(1175, 700, 30, 20, 2, 12));
+				launchers.add(new projectileLauncher(900, 650, 20, 30, 3, 9, 113));
+				launchers.add(new projectileLauncher(1175, 700, 30, 20, 2, 16, 92));
+				launchers.add(new projectileLauncher(225, 225, 30, 20, 2, 6, 76));
+				launchers.add(new projectileLauncher(491, 230, 30, 20, 2, 14, 54));
+				launchers.add(new projectileLauncher(758, 230, 30, 20, 2, 11, 86));
+				
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {

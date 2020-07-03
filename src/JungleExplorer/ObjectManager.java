@@ -26,10 +26,9 @@ public class ObjectManager {
 	}
 
 	void update() {
-		
+
 		if (!checkHittingHead()) {
-		
-		
+
 			if (!checkStanding()) {
 				if (stand == true)
 					System.out.println("Not standing");
@@ -47,12 +46,13 @@ public class ObjectManager {
 		checkStanding();
 		checkRightWall();
 		checkLeftWall();
-		player.update();
-		for (int i = 0; i<projectile.size();i++) {
-		projectile.get(i).update();
+
+		for (int i = 0; i < projectile.size(); i++) {
+			projectile.get(i).update();
 		}
 		removeObjects();
 
+		player.update();
 	}
 
 	void addProjectile(Projectile a) {
@@ -80,10 +80,10 @@ public class ObjectManager {
 			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(2))) {
 
 				standing = true;
-				if(player.ifAir==false&&noLeft==false&&noRight==false) {
-				while (player.y + 125 > lvls.get(0).get(i).get(2).y + 1) {
-					player.y--;
-				}
+				if (player.ifAir == false && noLeft == false && noRight == false) {
+					while (player.y + 125 > lvls.get(0).get(i).get(2).y + 1) {
+						player.y--;
+					}
 				}
 				break;
 
@@ -100,7 +100,7 @@ public class ObjectManager {
 	boolean checkHittingHead() {
 		hittingHead = false;
 		for (int i = 0; i < lvls.get(0).size(); i++) {
-			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0))&&noLeft==false&&noRight==false) {
+			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0)) && noLeft == false && noRight == false) {
 
 				player.yvelocity = 0;
 				while (player.y < lvls.get(0).get(i).get(0).y - 1) {
@@ -118,17 +118,19 @@ public class ObjectManager {
 	boolean hittingWall = false;
 
 	void draw(Graphics g) {
-		for(int i = 0; i<projectile.size();i++) {
+		for (int i = 0; i < projectile.size(); i++) {
+
 			projectile.get(i).draw(g);
-			
+
 		}
-		for(int i = 0; i<lvls.get(0).size();i++) {
-			for(int k = 0; k<lvls.get(0).get(k).size();k++) {
+		for (int i = 0; i < lvls.get(0).size(); i++) {
+			for (int k = 0; k < lvls.get(0).get(k).size(); k++) {
 				Rectangle r = lvls.get(0).get(i).get(k);
-				g.drawRect(r.x,r.y,r.width,r.height);
+				g.drawRect(r.x, r.y, r.width, r.height);
 			}
 		}
 	}
+
 	boolean checkLeftWall() {
 		hittingWall = false;
 		noRight = false;
@@ -178,8 +180,8 @@ public class ObjectManager {
 
 		levelI.add(b.createBox(300, 600, 150, 100));
 		levelI.add(b.createBox(0, 700, 450, 200));
-		levelI.add(b.createBox(-20, 0, 50, 900));
-		levelI.add(b.createBox(1370, 0, 50, 900));
+		levelI.add(b.createBox(-20, -500, 50, 1900));
+		levelI.add(b.createBox(1370, -1000, 30, 2700));
 		levelI.add(b.createBox(650, 600, 525, 200));
 		levelI.add(b.createBox(1250, 475, 120, 70));
 		levelI.add(b.createBox(0, -100, 1400, 130));
@@ -202,68 +204,71 @@ public class ObjectManager {
 		levelII.add(b.createBox(400, 600, 100, 200));
 		levelII.add(b.createBox(400, 700, 500, 50));
 		levelII.add(b.createBox(900, 620, 130, 200));
-		levelII.add(b.createBox(1000,700,400,50));
-		levelII.add(b.createBox(0, -100, 1400, 130));
-		levelII.add(b.createBox(-20, 0, 50, 900));
-		levelII.add(b.createBox(1370, 0, 30, 700));
-levelII.add(b.createBox(1300, 575, 100, 125));
-levelII.add(b.createBox(1100, 425, 50, 50));
-levelII.add(b.createBox(1330, 300, 50, 50));
+		levelII.add(b.createBox(1000, 700, 400, 50));
+		levelII.add(b.createBox(0, -500, 1400, 530));
+		levelII.add(b.createBox(-20, -500, 50, 1900));
+		levelII.add(b.createBox(1370, -1000, 30, 2700));
+		levelII.add(b.createBox(1300, 575, 100, 125));
+		levelII.add(b.createBox(1100, 425, 50, 50));
+		levelII.add(b.createBox(1320, 320, 50, 50));
+		levelII.add(b.createBox(1000, 180, 150, 50));
+		levelII.add(b.createBox(0, 220, 1150, 60));
 
 		return levelII;
 	}
 
 	void removeObjects() {
-		for (int q = 0; q<projectile.size(); q++) {
-			if (projectile.get(q).x<0) {
-				projectile.remove(q);
-			}
-		}
-		for (int w = 0; w<projectile.size(); w++) {
-			if (projectile.get(w).y<-80) {
-				projectile.remove(w);
-			}
-		}
+
 		for (int i = 0; i < projectile.size(); i++) {
 			if (projectile.get(i).hitBox.intersects(player.playerHitBox)) {
-				projectile.remove(i);
+				projectile.clear();
 				player.health--;
 				player.x = 100;
 				player.y = 400;
-				projectile.clear();
+
+			}
 		}
-		}
-			
-			for (int a = 0; a < projectile.size(); a++) {
-				System.out.println(projectile.get(a).x+", "+projectile.get(a).y+"    "+lvls.get(0).get(a).get(3).x+", "+lvls.get(0).get(a).get(3));
-				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(a).get(3))) {
-					System.out.println("test");
-					
+		int holder = 0;
+		for (int a = 0; a < projectile.size(); a++) {
+			for (int s = 0; s < lvls.get(0).size(); s++) {
+
+				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(s).get(3))) {
 					projectile.remove(a);
 
+					break;
 				}
-			}
-			for (int b = 0; b < projectile.size(); b++) {
-				if (projectile.get(b).hitBox.intersects(lvls.get(0).get(b).get(2))) {
-					projectile.remove(b);
 
+			}
+			if(projectile.size()==0) {
+				break;
+			}
+			for (int s = 0; s < lvls.get(0).size(); s++) {
+				
+
+				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(s).get(2))) {
+					projectile.remove(a);
+					break;
 				}
-			}
-			for (int c = 0; c < projectile.size(); c++) {
-				if (projectile.get(c).hitBox.intersects(lvls.get(0).get(c).get(1))) {
-					projectile.remove(c);
 
+			}
+			for (int s = 0; s < lvls.get(0).size(); s++) {
+
+				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(s).get(1))) {
+					projectile.remove(a);
+					break;
 				}
-			}
-			for (int d = 0; d < projectile.size(); d++) {
-				if (projectile.get(d).hitBox.intersects(lvls.get(0).get(d).get(0))) {
-					projectile.remove(d);
 
+			}
+			for (int s = 0; s < lvls.get(0).size(); s++) {
+
+				if (projectile.get(a).hitBox.intersects(lvls.get(0).get(s).get(0))) {
+					projectile.remove(a);
+					break;
 				}
-			}
 
+			}
 		}
 
 	}
 
-
+}

@@ -7,13 +7,15 @@ public class projectileLauncher {
 	int height;
 	int direction;
 	int speed;
+	int rate;
 
-	projectileLauncher(int x, int y, int width, int height, int direction, int speed) {
+	projectileLauncher(int x, int y, int width, int height, int direction, int speed, int rate) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.direction = direction;
 		this.speed = speed;
+		this.rate = rate;
 
 	}
 
