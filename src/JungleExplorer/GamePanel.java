@@ -18,6 +18,8 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	ArrayList<projectileLauncher> launchers = new ArrayList<projectileLauncher>();
+	public static ArrayList<hotPad> pads = new ArrayList<hotPad>();
+	public static ArrayList<Coin> coins = new ArrayList<Coin>();
 	public static BufferedImage aimage;
 	public static boolean aneedImage = true;
 	public static boolean agotImage = false;
@@ -28,6 +30,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static boolean hneedImage = true;
 	public static boolean hgotImage = false;
 	public static int counter = 0;
+	public static int coin = 0;
+
+	int doorX = 30;
+	int doorY= 60;
 	Timer bulletTimer;
 	final int MENU = 0;
 	final int INT = 1;
@@ -41,9 +47,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font intTextFont;
 	Player player;
 	ObjectManager manager;
-	Rectangle door = new Rectangle(100, 75, 100, 150);
+	Rectangle door = new Rectangle(doorX, doorY, 100, 150);
 
 	GamePanel() {
+		coins.add(new Coin(1240,110,50,50,true,false));
 		player = new Player(50, 525, 125, 75, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
@@ -73,6 +80,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawIntState(Graphics g) {
+		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setFont(intTitleFont);
@@ -82,18 +90,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("       To move you must use the a and s keys or the left and right arrow keys. To ", 75, 350);
 
 		g.drawString("jump simply press space. Your goal is to reach the door at the end of the level and", 75, 425);
-		g.drawString("presss the up arrow or w. There are obstacles such as projectiles, gaps in the floor", 75, 500);
-		g.drawString("and fire. You have 3 attempts to see how far you can go. There are a total of ___levels!", 75,
+		g.drawString("presss the up arrow or w. There are obstacles such as projectiles, gaps in the floor, ", 75, 500);
+		g.drawString("and fire hot rocks. You have 3 attempts to see how far you can go. There are a total of 5 levels!", 75,
 				575);
 
 	}
 
 	void drawLevelIState(Graphics g) {
-manager.draw(g);
-		g.setColor(Color.RED);
+
+		g.setColor(Color.lightGray);
 		g.drawImage(aimage, 0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT, null);
 		g.setColor(Color.yellow);
-		g.fillRect(100, 75, 100, 150);
+		g.fillRect(doorX, doorY, 100, 150);
 		g.setColor(Color.GREEN);
 
 		g.fillRect(300, 600, 150, 100);
@@ -107,7 +115,7 @@ manager.draw(g);
 		g.fillRect(0, 300, 525, 50);
 		g.fillRect(0, 250, 425, 50);
 		g.fillRect(0, 200, 325, 50);
-
+		coins.get(0).draw(g);
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
@@ -117,35 +125,33 @@ manager.draw(g);
 
 	void drawLevelIIState(Graphics g) {
 
-		g.setColor(Color.RED);
+		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setColor(Color.yellow);
-		g.fillRect(100, 75, 100, 150);
+		g.fillRect(doorX, doorY, 100, 150);
 		g.setColor(Color.GREEN);
-		
-		
+
 		g.fillRect(0, 700, 400, 50);
 		g.fillRect(400, 600, 100, 200);
 		g.fillRect(900, 620, 130, 200);
 		g.fillRect(400, 700, 500, 50);
-		g.fillRect(1000,700,400,50);
+		g.fillRect(1000, 700, 400, 50);
 		g.fillRect(0, 0, 1400, 30);
 		g.fillRect(0, 0, 30, 700);
 		g.fillRect(1370, 0, 30, 700);
 		g.fillRect(1300, 575, 100, 125);
-		g.fillRect(1100	, 425, 50, 50);
+		g.fillRect(1100, 425, 50, 50);
 		g.fillRect(1320, 320, 50, 50);
-		g.fillRect(1000	, 180, 150, 50);
+		g.fillRect(1000, 180, 150, 50);
 		g.fillRect(0, 220, 1150, 60);
-		
-	
+
 		g.setColor(Color.gray);
 		g.fillRect(900, 650, 20, 30);
 		g.fillRect(1175, 700, 30, 20);
 		g.fillRect(225, 220, 30, 20);
 		g.fillRect(491, 220, 30, 20);
 		g.fillRect(758, 220, 30, 20);
-	
+
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
@@ -153,7 +159,47 @@ manager.draw(g);
 		player.draw(g);
 		for (int i = 0; i < manager.projectile.size(); i++) {
 			manager.projectile.get(i).draw(g);
+
+		}
+	}
+
+	void drawLevelIIIState(Graphics g) {		
+		g.setColor(Color.lightGray);
+		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+		g.setColor(Color.yellow);
+		g.fillRect(doorX, doorY, 100, 150);
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 700, 400, 50);
+		g.fillRect(0, -500, 1400, 530);
+		g.fillRect(-20, -500, 50, 1900);
+		g.fillRect(1370, -1000, 30, 2700);
+		g.fillRect(500, 650, 270, 150);
+		g.fillRect(1220, 615, 50, 50);
+		g.fillRect(1130, 330, 50, 50);
+		g.fillRect(150, 200, 900, 50);
+
 		
+		
+
+		g.setColor(Color.gray);
+		
+		for(int i = 0; i<pads.size();i++) {
+			if(pads.get(i).active) {
+				g.setColor(Color.RED);
+			}
+			else {
+				g.setColor(Color.ORANGE);
+			}
+		g.fillRect(pads.get(i).x,pads.get(i).y,pads.get(i).width,pads.get(i).height);
+		}
+		coins.get(1).draw(g);
+		for (int i = 0; i < player.health; i++) {
+			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
+		}
+
+		player.draw(g);
+		for (int i = 0; i < manager.projectile.size(); i++) {
+			manager.projectile.get(i).draw(g);
 
 		}
 	}
@@ -177,6 +223,13 @@ manager.draw(g);
 	}
 
 	void updateLevelIIState() {
+		manager.update();
+		if (player.lose) {
+			currentState = END;
+		}
+	}
+
+	void updateLevelIIIState() {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
@@ -221,12 +274,12 @@ manager.draw(g);
 			drawLevelIState(g);
 		} else if (currentState == LEVELII) {
 			drawLevelIIState(g);
+		} else if(currentState==LEVELIII) {
+				drawLevelIIIState(g);
 		} else if (currentState == END) {
 			drawEndState(g);
 		}
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -239,18 +292,40 @@ manager.draw(g);
 			updateLevelIState();
 		} else if (currentState == LEVELII) {
 			updateLevelIIState();
+		} else if (currentState == LEVELIII) {
+			updateLevelIIIState();
 		} else if (currentState == END) {
 			updateEndState();
 		}
 		repaint();
 		counter++;
-
+		System.out.println(coin);
 		
-			for (int i = 0; i < launchers.size(); i++) {
-				if(counter%launchers.get(i).rate==0) {
+door.setBounds(doorX, doorY, 100, 150);
+		for (int i = 0; i < launchers.size(); i++) {
+			if (counter % launchers.get(i).rate == 0) {
 				manager.addProjectile(launchers.get(i).getProjectile());
 			}
-	
+
+		}
+		for (int i = 0; i < pads.size(); i++) {
+			if (counter % pads.get(i).rate == 0) {
+				pads.get(i).active=true;
+				pads.get(i).holder=pads.get(i).length;
+			
+			}
+			else {
+				if(pads.get(i).holder<0) {
+					
+				pads.get(i).active=false;
+				pads.get(i).holder--;
+				}
+				else {
+					pads.get(i).active=true;
+					pads.get(i).holder--;
+				}
+			}
+
 		}
 
 	}
@@ -266,8 +341,12 @@ manager.draw(g);
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == KeyEvent.VK_UP && door.intersects(player.playerHitBox)) {
 			currentState++;
+			manager.projectile.clear();
 			manager.lvls.remove(0);
+			launchers.clear();
 			if (currentState == LEVELII) {
+				coins.get(0).active=false;
+				doorY=doorY+10;
 				player.x = 100;
 				player.y = 400;
 				manager.lvls.add(manager.createLevelII());
@@ -276,7 +355,26 @@ manager.draw(g);
 				launchers.add(new projectileLauncher(225, 225, 30, 20, 2, 6, 76));
 				launchers.add(new projectileLauncher(491, 230, 30, 20, 2, 14, 54));
 				launchers.add(new projectileLauncher(758, 230, 30, 20, 2, 11, 86));
+
+			}
+			if (currentState == LEVELIII) {
+				doorX=537;
+				doorY=60; 
+				coins.add(new Coin(60,250,50,50,true,false));
+				pads.add(new hotPad(275,700,125,15,150,25));
+				launchers.add(new projectileLauncher(440,800,30,20,2,10,55));
+				pads.add(new hotPad(1000, 675, 50, 50,200,20));
+				pads.add(new hotPad(1300, 475, 70, 50,70,10));
+				pads.add(new hotPad(150, 200, 125, 20,100,50));
+				pads.add(new hotPad(275, 200, 125, 20,200,70));
+				pads.add(new hotPad(400, 200, 125, 20,100,50));
 				
+				pads.add(new hotPad(650, 200, 125, 20,100,50));
+				pads.add(new hotPad(775, 200, 125, 20,200,100));
+				player.x = 30;
+				player.y = 300;
+				manager.lvls.add(manager.createLevelIII());
+
 			}
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {

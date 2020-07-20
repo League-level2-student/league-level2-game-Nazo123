@@ -43,6 +43,7 @@ public class Player extends GameObject {
 		this.speed = speed;
 		this.isVisable = isVisable;
 		this.isAlive = isAlive;
+		
 
 		if (needImage) {
 			loadImage("Player.png");

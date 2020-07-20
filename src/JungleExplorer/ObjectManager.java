@@ -10,6 +10,7 @@ public class ObjectManager {
 	Player player;
 	Box b = new Box();
 	public boolean noRight;
+	int runner = 0;
 	public boolean noLeft;
 	ArrayList<Projectile> projectile = new ArrayList<Projectile>();
 
@@ -19,15 +20,11 @@ public class ObjectManager {
 		this.player = player;
 		lvls.add(createLevelI());
 
-		System.out.println("Hit Ceiling:" + checkHittingHead());
-		System.out.println("Hit Roof:" + checkStanding());
-		System.out.println("Hit Left Wall:" + checkLeftWall());
-		System.out.println("Hit Right Wall:" + checkRightWall());
 	}
 
 	void update() {
-
-		if (!checkHittingHead()) {
+	
+		checkHittingHead();
 
 			if (!checkStanding()) {
 				if (stand == true)
@@ -42,7 +39,8 @@ public class ObjectManager {
 
 			}
 
-		}
+		
+		
 		checkStanding();
 		checkRightWall();
 		checkLeftWall();
@@ -50,9 +48,10 @@ public class ObjectManager {
 		for (int i = 0; i < projectile.size(); i++) {
 			projectile.get(i).update();
 		}
+		
 		removeObjects();
-
 		player.update();
+		runner++;
 	}
 
 	void addProjectile(Projectile a) {
@@ -64,6 +63,7 @@ public class ObjectManager {
 
 	boolean checkStanding() {
 		standing = false;
+		
 		for (int i = 0; i < lvls.get(0).size(); i++) {
 			// Rectangle r = lvls.get(0).get(i).get(2);
 			// Rectangle p = player.playerHitBox;
@@ -77,17 +77,23 @@ public class ObjectManager {
 			// // TODO Auto-generated catch block
 			// e.printStackTrace();
 			// }
-			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(2))) {
 
-				standing = true;
-				if (player.ifAir == false && noLeft == false && noRight == false) {
+	
+			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(2))) {
+			
+				player.ifAir=false;
+				
 					while (player.y + 125 > lvls.get(0).get(i).get(2).y + 1) {
 						player.y--;
-					}
+					
 				}
+		
 				break;
 
 			}
+		
+			
+
 
 		}
 
@@ -100,13 +106,20 @@ public class ObjectManager {
 	boolean checkHittingHead() {
 		hittingHead = false;
 		for (int i = 0; i < lvls.get(0).size(); i++) {
-			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0)) && noLeft == false && noRight == false) {
-
+			
+			if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0))) {
+				hittingHead = true;
+				player.ifAir=true;
 				player.yvelocity = 0;
+
+				
+				if (player.playerHitBox.intersects(lvls.get(0).get(i).get(0)) && noLeft == false && noRight == false) {
 				while (player.y < lvls.get(0).get(i).get(0).y - 1) {
 					player.y++;
 				}
-				hittingHead = true;
+
+				}
+				
 				break;
 			}
 
@@ -179,10 +192,10 @@ public class ObjectManager {
 		ArrayList<ArrayList<Rectangle>> levelI = new ArrayList<ArrayList<Rectangle>>();
 
 		levelI.add(b.createBox(300, 600, 150, 100));
-		levelI.add(b.createBox(0, 700, 450, 200));
+		levelI.add(b.createBox(0, 700, 450, 100));
 		levelI.add(b.createBox(-20, -500, 50, 1900));
 		levelI.add(b.createBox(1370, -1000, 30, 2700));
-		levelI.add(b.createBox(650, 600, 525, 200));
+		levelI.add(b.createBox(650, 600, 525, 30));
 		levelI.add(b.createBox(1250, 475, 120, 70));
 		levelI.add(b.createBox(0, -100, 1400, 130));
 		levelI.add(b.createBox(725, 350, 350, 50));
@@ -216,9 +229,65 @@ public class ObjectManager {
 
 		return levelII;
 	}
+	ArrayList<ArrayList<Rectangle>> createLevelIII() {
+		ArrayList<ArrayList<Rectangle>> levelIII = new ArrayList<ArrayList<Rectangle>>();
+	
+	
+		levelIII.add(b.createBox(0, -500, 1400, 530));
+		levelIII.add(b.createBox(-20, -500, 50, 1900));
+		levelIII.add(b.createBox(1370, -1000, 30, 2700));
+		levelIII.add(b.createBox(0, 700, 400, 50));
+		levelIII.add(b.createBox(500, 650, 270, 150));
+		levelIII.add(b.createBox(1000, 675, 50, 50));
+		levelIII.add(b.createBox(1220, 615, 50, 50));
+		levelIII.add(b.createBox(1330, 475, 70, 50));
+		levelIII.add(b.createBox(1130, 330, 50, 50));
+		levelIII.add(b.createBox(150, 200, 900, 50));
+	
+		return levelIII;
+	}
+	ArrayList<ArrayList<Rectangle>> createLevelIV() {
+		ArrayList<ArrayList<Rectangle>> levelIV = new ArrayList<ArrayList<Rectangle>>();
 
+	
+
+		return levelIV;
+	}
+	ArrayList<ArrayList<Rectangle>> createLevelV() {
+		ArrayList<ArrayList<Rectangle>> levelV = new ArrayList<ArrayList<Rectangle>>();
+
+		levelV.add(b.createBox(0, 700, 400, 50));
+		levelV.add(b.createBox(400, 600, 100, 200));
+		levelV.add(b.createBox(400, 700, 500, 50));
+		levelV.add(b.createBox(900, 620, 130, 200));
+		levelV.add(b.createBox(1000, 700, 400, 50));
+		levelV.add(b.createBox(0, -500, 1400, 530));
+		levelV.add(b.createBox(-20, -500, 50, 1900));
+		levelV.add(b.createBox(1370, -1000, 30, 2700));
+		levelV.add(b.createBox(1300, 575, 100, 125));
+		levelV.add(b.createBox(1100, 425, 50, 50));
+		levelV.add(b.createBox(1320, 320, 50, 50));
+		levelV.add(b.createBox(1000, 180, 150, 50));
+		levelV.add(b.createBox(0, 220, 1150, 60));
+
+		return levelV;
+	}
 	void removeObjects() {
-
+		
+		for(int i = 0; i<GamePanel.coins.size(); i++) {
+			if(GamePanel.coins.get(i).hitbox.intersects(player.playerHitBox)&&GamePanel.coins.get(i).active) {
+GamePanel.coin++;				
+GamePanel.coins.get(i).collected = true;
+			}
+		}
+		for (int i = 0; i<GamePanel.pads.size(); i++) {
+			if (GamePanel.pads.get(i).hitbox.intersects(player.playerHitBox)&&GamePanel.pads.get(i).active) {
+				projectile.clear();
+				player.health--;
+				player.x = 100;
+				player.y = 400;
+			}
+		}
 		for (int i = 0; i < projectile.size(); i++) {
 			if (projectile.get(i).hitBox.intersects(player.playerHitBox)) {
 				projectile.clear();
