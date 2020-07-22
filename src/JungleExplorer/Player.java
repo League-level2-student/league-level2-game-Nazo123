@@ -31,7 +31,7 @@ public class Player extends GameObject {
 	boolean isVisable;
 	boolean isAlive;
 	Rectangle playerHitBox;
-	public static int health = 3;
+	public static int health = 10;
 
 	Player(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		super(x, y, height, width, speed, isVisable, isAlive);
@@ -98,19 +98,23 @@ public class Player extends GameObject {
 
 	public void left() {
 		facingRight = false;
+		if(ObjectManager.noLeft == false) {
 		if (ifAir) {
 			leftSpeed = -speed * 4 / 3;
 		} else {
 			leftSpeed = -speed;
 		}
-	}
+		}
+		}
 
 	public void right() {
 		facingRight = true;
+		if(ObjectManager.noRight == false) {
 		if (ifAir) {
 			rightSpeed = speed * 4 / 3;
 		} else {
 			rightSpeed = speed;
+		}
 		}
 	}
 
@@ -153,8 +157,14 @@ public class Player extends GameObject {
 
 		playerHitBox.setBounds(x, y, width, height);
 		if (y > 700) {
+			if(GamePanel.currentState==GamePanel.LEVELIV) {
+				x = 700;
+				y = 600;
+			}
+			else {
 			x = 100;
-			y = 400;
+			y = 600;
+			}
 			health--;
 		}
 		if (health == 0) {

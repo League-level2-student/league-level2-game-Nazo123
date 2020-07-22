@@ -35,13 +35,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	int doorX = 30;
 	int doorY= 60;
 	Timer bulletTimer;
-	final int MENU = 0;
-	final int INT = 1;
-	final int LEVELI = 2;
-	final int LEVELII = 3;
-	final int LEVELIII = 4;
-	final int END = 5;
-	int currentState = MENU;
+	final static int MENU = 0;
+	final static int INT = 1;
+	final static int LEVELI = 2;
+	final static int LEVELII = 3;
+	final static int LEVELIII = 4;
+	final static int LEVELIV = 5;
+	final static int END = 6;
+	static int currentState = MENU;
 	Timer frameRate;
 	Font intTitleFont;
 	Font intTextFont;
@@ -203,6 +204,40 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		}
 	}
+	void drawLevelIVState(Graphics g) {		
+		g.setColor(Color.lightGray);
+		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+		g.setColor(Color.yellow);
+		g.fillRect(doorX, doorY, 100, 150);
+		g.setColor(Color.GREEN);
+		
+		g.fillRect(650, 700, 200, 100);
+		g.fillRect(350, 650, 50, 50);
+		g.fillRect(50, 600, 50, 50);
+		g.fillRect(0, 450, 50, 50);
+	
+		g.setColor(Color.gray);
+		
+		for(int i = 0; i<pads.size();i++) {
+			if(pads.get(i).active) {
+				g.setColor(Color.RED);
+			}
+			else {
+				g.setColor(Color.ORANGE);
+			}
+		g.fillRect(pads.get(i).x,pads.get(i).y,pads.get(i).width,pads.get(i).height);
+		}
+		coins.get(1).draw(g);
+		for (int i = 0; i < player.health; i++) {
+			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
+		}
+
+		player.draw(g);
+		for (int i = 0; i < manager.projectile.size(); i++) {
+			manager.projectile.get(i).draw(g);
+
+		}
+	}
 
 	void drawEndState(Graphics g) {
 		g.setColor(Color.BLUE);
@@ -230,6 +265,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateLevelIIIState() {
+		manager.update();
+		if (player.lose) {
+			currentState = END;
+		}
+	}
+	void updateLevelIVState() {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
@@ -276,7 +317,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawLevelIIState(g);
 		} else if(currentState==LEVELIII) {
 				drawLevelIIIState(g);
-		} else if (currentState == END) {
+		} else if(currentState==LEVELIV) {
+			drawLevelIVState(g);
+	    } else if (currentState == END) {
 			drawEndState(g);
 		}
 	}
@@ -294,6 +337,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updateLevelIIState();
 		} else if (currentState == LEVELIII) {
 			updateLevelIIIState();
+		} else if (currentState == LEVELIV) {
+			updateLevelIVState();
 		} else if (currentState == END) {
 			updateEndState();
 		}
@@ -344,11 +389,12 @@ door.setBounds(doorX, doorY, 100, 150);
 			manager.projectile.clear();
 			manager.lvls.remove(0);
 			launchers.clear();
+			pads.clear();
 			if (currentState == LEVELII) {
 				coins.get(0).active=false;
 				doorY=doorY+10;
 				player.x = 100;
-				player.y = 400;
+				player.y = 600;
 				manager.lvls.add(manager.createLevelII());
 				launchers.add(new projectileLauncher(900, 650, 20, 30, 3, 9, 113));
 				launchers.add(new projectileLauncher(1175, 700, 30, 20, 2, 16, 92));
@@ -366,14 +412,24 @@ door.setBounds(doorX, doorY, 100, 150);
 				pads.add(new hotPad(1000, 675, 50, 50,200,20));
 				pads.add(new hotPad(1300, 475, 70, 50,70,10));
 				pads.add(new hotPad(150, 200, 125, 20,100,50));
-				pads.add(new hotPad(275, 200, 125, 20,200,70));
+				pads.add(new hotPad(275, 200, 125, 20,300,150));
 				pads.add(new hotPad(400, 200, 125, 20,100,50));
 				
 				pads.add(new hotPad(650, 200, 125, 20,100,50));
 				pads.add(new hotPad(775, 200, 125, 20,200,100));
 				player.x = 30;
-				player.y = 300;
+				player.y = 600;
 				manager.lvls.add(manager.createLevelIII());
+
+			}
+			if (currentState == LEVELIV) {
+				coins.get(1).active=false;
+				player.x = 700;
+				player.y = 600;
+				
+				launchers.add(new projectileLauncher(215,800,20,20,2,10,55));
+				manager.lvls.add(manager.createLevelIV());
+				pads.add(new hotPad(325, 400, 50, 50,150,25));
 
 			}
 		}
@@ -386,12 +442,12 @@ door.setBounds(doorX, doorY, 100, 150);
 			}
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_LEFT && manager.noLeft == false) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 
 			player.left();
 
 		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT && manager.noRight == false) {
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
 			player.right();
 		}

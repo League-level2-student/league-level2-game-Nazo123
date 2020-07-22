@@ -9,9 +9,9 @@ public class ObjectManager {
 	boolean stand = true;
 	Player player;
 	Box b = new Box();
-	public boolean noRight;
+	public static boolean noRight;
 	int runner = 0;
-	public boolean noLeft;
+	public static boolean noLeft;
 	ArrayList<Projectile> projectile = new ArrayList<Projectile>();
 
 	public ArrayList<ArrayList<ArrayList<Rectangle>>> lvls = new ArrayList<ArrayList<ArrayList<Rectangle>>>();
@@ -249,7 +249,12 @@ public class ObjectManager {
 	ArrayList<ArrayList<Rectangle>> createLevelIV() {
 		ArrayList<ArrayList<Rectangle>> levelIV = new ArrayList<ArrayList<Rectangle>>();
 
-	
+		levelIV.add(b.createBox(650, 700, 200, 100));
+		levelIV.add(b.createBox(350, 650, 50, 50));
+		levelIV.add(b.createBox(50, 600, 50, 50));
+		levelIV.add(b.createBox(0, 450, 50, 50));
+		levelIV.add(b.createBox(325, 400, 50, 50));
+
 
 		return levelIV;
 	}
@@ -283,17 +288,30 @@ GamePanel.coins.get(i).collected = true;
 		for (int i = 0; i<GamePanel.pads.size(); i++) {
 			if (GamePanel.pads.get(i).hitbox.intersects(player.playerHitBox)&&GamePanel.pads.get(i).active) {
 				projectile.clear();
+				
 				player.health--;
+				if(GamePanel.currentState==GamePanel.LEVELIV) {
+					player.x = 700;
+					player.y = 600;
+				}
+				else {
 				player.x = 100;
-				player.y = 400;
+				player.y = 600;
+				}
 			}
 		}
 		for (int i = 0; i < projectile.size(); i++) {
 			if (projectile.get(i).hitBox.intersects(player.playerHitBox)) {
 				projectile.clear();
 				player.health--;
+				if(GamePanel.currentState==GamePanel.LEVELIV) {
+					player.x = 700;
+					player.y = 600;
+				}
+				else {
 				player.x = 100;
-				player.y = 400;
+				player.y = 600;
+				}
 
 			}
 		}
