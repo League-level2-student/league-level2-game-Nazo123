@@ -31,7 +31,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static boolean hgotImage = false;
 	public static int counter = 0;
 	public static int coin = 0;
-
+	public static Rectangle key = new Rectangle(50,75,25,50);
+	public static boolean gotKey = false;
 	int doorX = 30;
 	int doorY= 60;
 	Timer bulletTimer;
@@ -41,7 +42,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final static int LEVELII = 3;
 	final static int LEVELIII = 4;
 	final static int LEVELIV = 5;
-	final static int END = 6;
+	final static int LEVELV = 6;
+	final static int END = 7;
 	static int currentState = MENU;
 	Timer frameRate;
 	Font intTitleFont;
@@ -210,14 +212,38 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.yellow);
 		g.fillRect(doorX, doorY, 100, 150);
 		g.setColor(Color.GREEN);
-		
-		g.fillRect(650, 700, 200, 100);
+		if(gotKey) {
+
+			g.fillRect(50, 650, 350, 50);
+
+		}
+		else {
+			g.setColor(Color.black);
+			g.fillRect(50,75,25,50);
+			g.setColor(Color.GREEN);
+			g.fillRect(1250-10, 0, 50, 200);
+			g.fillRect(0, 120, 300, 25);
+		}
+		g.fillRect(750, 450, 110, 80);
+		g.fillRect(650, 700, 750, 100);
 		g.fillRect(350, 650, 50, 50);
 		g.fillRect(50, 600, 50, 50);
 		g.fillRect(0, 450, 50, 50);
+	g.fillRect(425, 275, 50, 50);
+	g.fillRect(750, 526, 550, 50);
+	g.fillRect(750, 0, 40, 536);
+	g.fillRect(1390, -200, 300, 1000);
+	g.fillRect(950, 300, 150, 50);
+	g.fillRect(1100, 250, 150, 100);
+	g.fillRect(1240, 200, 210, 150);
 	
+
 		g.setColor(Color.gray);
 		
+		g.fillRect(890, 526, 20, 30);
+		g.fillRect(1040, 526, 20, 30);
+		g.fillRect(1190, 526, 20, 30);
+	
 		for(int i = 0; i<pads.size();i++) {
 			if(pads.get(i).active) {
 				g.setColor(Color.RED);
@@ -238,7 +264,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		}
 	}
-
+	void drawLevelVState(Graphics g) {		
+		g.setColor(Color.lightGray);
+		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+		g.setColor(Color.yellow);
+		g.fillRect(doorX, doorY, 100, 150);
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 700, 1400, 100);
+		player.draw(g);
+	}
 	void drawEndState(Graphics g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
@@ -271,6 +305,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	void updateLevelIVState() {
+		manager.update();
+		if (player.lose) {
+			currentState = END;
+		}
+	}
+	void updateLevelVState() {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
@@ -319,6 +359,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				drawLevelIIIState(g);
 		} else if(currentState==LEVELIV) {
 			drawLevelIVState(g);
+	    } 
+		else if(currentState==LEVELV) {
+			drawLevelVState(g);
 	    } else if (currentState == END) {
 			drawEndState(g);
 		}
@@ -339,7 +382,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updateLevelIIIState();
 		} else if (currentState == LEVELIV) {
 			updateLevelIVState();
-		} else if (currentState == END) {
+		} 
+		else if (currentState == LEVELV) {
+			updateLevelVState();
+		}else if (currentState == END) {
 			updateEndState();
 		}
 		repaint();
@@ -426,10 +472,27 @@ door.setBounds(doorX, doorY, 100, 150);
 				coins.get(1).active=false;
 				player.x = 700;
 				player.y = 600;
-				
-				launchers.add(new projectileLauncher(215,800,20,20,2,10,55));
+				doorX=1300-10;
+				doorY=50; 
+				launchers.add(new projectileLauncher(215,800,20,20,2,10,87));
 				manager.lvls.add(manager.createLevelIV());
-				pads.add(new hotPad(325, 400, 50, 50,150,25));
+				pads.add(new hotPad(325, 375, 50, 50,150,25));
+				pads.add(new hotPad(800, 700, 100, 50,200,50));
+				pads.add(new hotPad(1000, 700, 100, 50,100,25));
+				pads.add(new hotPad(1200, 700, 100, 50,200,50));
+				launchers.add(new projectileLauncher(890,526,20,30,2,12,79));
+				launchers.add(new projectileLauncher(1040,526,20,30,2,16,57));
+				launchers.add(new projectileLauncher(1190,526,20,30,2,13,68));
+
+
+			}
+			if (currentState == LEVELV) {
+				player.x = 650;
+				player.y = 600;
+				manager.lvls.add(manager.createLevelV());
+				doorX=-900;
+				doorY=-900; 
+				
 
 			}
 		}

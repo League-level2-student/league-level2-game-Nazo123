@@ -249,36 +249,39 @@ public class ObjectManager {
 	ArrayList<ArrayList<Rectangle>> createLevelIV() {
 		ArrayList<ArrayList<Rectangle>> levelIV = new ArrayList<ArrayList<Rectangle>>();
 
-		levelIV.add(b.createBox(650, 700, 200, 100));
+		levelIV.add(b.createBox(650, 700, 750, 100));
 		levelIV.add(b.createBox(350, 650, 50, 50));
 		levelIV.add(b.createBox(50, 600, 50, 50));
 		levelIV.add(b.createBox(0, 450, 50, 50));
-		levelIV.add(b.createBox(325, 400, 50, 50));
-
+		levelIV.add(b.createBox(325, 375, 50, 50));
+		levelIV.add(b.createBox(425, 275, 50, 50));
+		levelIV.add(b.createBox(0, 120, 300, 25));
+		levelIV.add(b.createBox(1250-10, -150, 50, 250));
+		levelIV.add(b.createBox(750, 526, 551, 50));
+		levelIV.add(b.createBox(1390, -4000, 300, 9000));
+		levelIV.add(b.createBox(750, 0, 40, 526));
+		levelIV.add(b.createBox(750, 450, 110, 80));
+		levelIV.add(b.createBox(950, 300, 150, 50));
+		levelIV.add(b.createBox(1100, 250, 150, 100));
+		levelIV.add(b.createBox(1240, 200, 210, 150));
 
 		return levelIV;
 	}
 	ArrayList<ArrayList<Rectangle>> createLevelV() {
 		ArrayList<ArrayList<Rectangle>> levelV = new ArrayList<ArrayList<Rectangle>>();
-
-		levelV.add(b.createBox(0, 700, 400, 50));
-		levelV.add(b.createBox(400, 600, 100, 200));
-		levelV.add(b.createBox(400, 700, 500, 50));
-		levelV.add(b.createBox(900, 620, 130, 200));
-		levelV.add(b.createBox(1000, 700, 400, 50));
-		levelV.add(b.createBox(0, -500, 1400, 530));
-		levelV.add(b.createBox(-20, -500, 50, 1900));
-		levelV.add(b.createBox(1370, -1000, 30, 2700));
-		levelV.add(b.createBox(1300, 575, 100, 125));
-		levelV.add(b.createBox(1100, 425, 50, 50));
-		levelV.add(b.createBox(1320, 320, 50, 50));
-		levelV.add(b.createBox(1000, 180, 150, 50));
-		levelV.add(b.createBox(0, 220, 1150, 60));
+		levelV.add(b.createBox(0, 700, 1400, 100));
 
 		return levelV;
 	}
 	void removeObjects() {
-		
+		if(player.playerHitBox.intersects(GamePanel.key)&&GamePanel.currentState==GamePanel.LEVELIV) {
+			GamePanel.gotKey = true;
+			GamePanel.key.setBounds(-100,-100,1,1);
+			lvls.get(0).remove(6);
+		lvls.get(0).remove(6);
+
+		lvls.get(0).add(b.createBox(50, 650, 350, 50));
+		}
 		for(int i = 0; i<GamePanel.coins.size(); i++) {
 			if(GamePanel.coins.get(i).hitbox.intersects(player.playerHitBox)&&GamePanel.coins.get(i).active) {
 GamePanel.coin++;				
