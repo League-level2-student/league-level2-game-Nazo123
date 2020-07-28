@@ -274,6 +274,18 @@ public class ObjectManager {
 		return levelV;
 	}
 	void removeObjects() {
+		if(GamePanel.currentState==GamePanel.LEVELV) {
+			if(GamePanel.boss.size()>0) {
+		if(player.playerHitBox.intersects(GamePanel.boss.get(0).bottomPart)) {
+			player.health--;
+		}
+		else if(player.playerHitBox.intersects(GamePanel.boss.get(0).headPart)){
+			player.jump();
+			GamePanel.boss.get(0).heath--;
+			GamePanel.boss.get(0).justLostLife=true;
+		}
+		}
+		}
 		if(player.playerHitBox.intersects(GamePanel.key)&&GamePanel.currentState==GamePanel.LEVELIV) {
 			GamePanel.gotKey = true;
 			GamePanel.key.setBounds(-100,-100,1,1);

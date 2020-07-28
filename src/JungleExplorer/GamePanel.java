@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	ArrayList<projectileLauncher> launchers = new ArrayList<projectileLauncher>();
 	public static ArrayList<hotPad> pads = new ArrayList<hotPad>();
 	public static ArrayList<Coin> coins = new ArrayList<Coin>();
+	public static ArrayList<Boss> boss = new ArrayList<Boss>();
 	public static BufferedImage aimage;
 	public static boolean aneedImage = true;
 	public static boolean agotImage = false;

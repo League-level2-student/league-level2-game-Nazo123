@@ -2,12 +2,19 @@ package JungleExplorer;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 public class Boss {
-
-	boolean jumping;
+	public static BufferedImage image;
+	public static boolean needImage = true;
+	public static boolean gotImage = false;
+	boolean jumping = false;
+	boolean justLostLife = false;
 	int speed;
 	int height;
+	int heath;
 	int width;
 	int x;
 	int y;
@@ -16,12 +23,15 @@ public class Boss {
 	Rectangle bottomPart;
 	
 	boolean attackDisable;
-	public Boss(int x, int y, int width,int height, int speed) {
+	public Boss(int x, int y, int width,int height, int speed,int health) {
 		this.speed=speed;
 		this.height=height;
 		this.width=width;
 		headPart = new Rectangle(x+10,y,width-20,height/3);
 		bottomPart = new Rectangle(x,y+height/3,width,height/3*2);
+		if (needImage) {
+			loadImage("boss.png");
+		}
 	}
 	
 	public void attack(int centerX) {
@@ -94,12 +104,33 @@ public class Boss {
 		}
 	}
 	public void update() {
+		
+		
+		
+		
 		headPart.setBounds(x+10,y,width-20,height/3);
 		bottomPart.setBounds(x,y+height/3,width,height/3*2);
-	}
-	void draw(Graphics g) {
+		
+		
+		
+		
+		
+		
 		
 	}
-	
+	void draw(Graphics g) {
+		g.drawImage(image, x, y, width, height, null);
+	}
+	void loadImage(String imageFile) {
+		if (needImage) {
+			try {
+				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+				gotImage = true;
+			} catch (Exception e) {
+
+			}
+			needImage = false;
+		}
+	}
 	
 }
