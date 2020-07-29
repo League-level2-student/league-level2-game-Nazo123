@@ -50,6 +50,9 @@ public class ObjectManager {
 		}
 		
 		removeObjects();
+		if(GamePanel.LEVELV==GamePanel.currentState&&GamePanel.boss.size()>0) {
+		GamePanel.boss.get(0).update();
+		}
 		player.update();
 		runner++;
 	}
@@ -278,17 +281,23 @@ public class ObjectManager {
 			if(GamePanel.boss.size()>0) {
 		if(player.playerHitBox.intersects(GamePanel.boss.get(0).bottomPart)) {
 			player.health--;
+			player.x = 600;
+			player.y =0;
 		}
 		else if(player.playerHitBox.intersects(GamePanel.boss.get(0).headPart)){
 			player.jump();
 			GamePanel.boss.get(0).heath--;
+			
+			if(GamePanel.boss.get(0).heath%3==0) {
 			GamePanel.boss.get(0).justLostLife=true;
+			}
 		}
 		}
 		}
 		if(player.playerHitBox.intersects(GamePanel.key)&&GamePanel.currentState==GamePanel.LEVELIV) {
 			GamePanel.gotKey = true;
 			GamePanel.key.setBounds(-100,-100,1,1);
+			projectile.clear();
 			lvls.get(0).remove(6);
 		lvls.get(0).remove(6);
 

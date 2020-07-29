@@ -272,6 +272,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(doorX, doorY, 100, 150);
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 700, 1400, 100);
+		if(boss.size()>0) {
+			boss.get(0).draw(g);
+			g.setColor(Color.red);
+			g.fillRect(boss.get(0).x, boss.get(0).y-30, boss.get(0).width, 15);
+			g.setColor(Color.green);
+			g.fillRect(boss.get(0).x, boss.get(0).y-30, (boss.get(0).width/25)*boss.get(0).heath, 15);
+		
+		}
+		for (int i = 0; i < player.health; i++) {
+			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
+		}
+		
 		player.draw(g);
 	}
 	void drawEndState(Graphics g) {
@@ -315,6 +327,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
+		}
+		if(boss.size()>0) {
+		if(boss.get(0).heath==0) {
+			boss.clear();
+		}
 		}
 	}
 
@@ -391,7 +408,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 		repaint();
 		counter++;
-		System.out.println(coin);
 		
 door.setBounds(doorX, doorY, 100, 150);
 		for (int i = 0; i < launchers.size(); i++) {
@@ -431,6 +447,9 @@ door.setBounds(doorX, doorY, 100, 150);
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
+		if(e.getKeyCode()==KeyEvent.VK_H) {
+			player.health++;
+		}
 		if (e.getKeyCode() == KeyEvent.VK_UP && door.intersects(player.playerHitBox)) {
 			currentState++;
 			manager.projectile.clear();
@@ -460,7 +479,7 @@ door.setBounds(doorX, doorY, 100, 150);
 				pads.add(new hotPad(1300, 475, 70, 50,70,10));
 				pads.add(new hotPad(150, 200, 125, 20,100,50));
 				pads.add(new hotPad(275, 200, 125, 20,300,150));
-				pads.add(new hotPad(400, 200, 125, 20,100,50));
+				
 				
 				pads.add(new hotPad(650, 200, 125, 20,100,50));
 				pads.add(new hotPad(775, 200, 125, 20,200,100));
@@ -470,6 +489,7 @@ door.setBounds(doorX, doorY, 100, 150);
 
 			}
 			if (currentState == LEVELIV) {
+				player.health++;
 				coins.get(1).active=false;
 				player.x = 700;
 				player.y = 600;
@@ -488,8 +508,10 @@ door.setBounds(doorX, doorY, 100, 150);
 
 			}
 			if (currentState == LEVELV) {
+				player.health++;
 				player.x = 650;
 				player.y = 600;
+				boss.add(new Boss(1100, 550, 200,150, 4,25));
 				manager.lvls.add(manager.createLevelV());
 				doorX=-900;
 				doorY=-900; 

@@ -25,13 +25,13 @@ public class Player extends GameObject {
 	public boolean lose = false;
 	static int x;
 	static int y;
-	int height;
-	int width;
+	static int height;
+	static int width;
 	int speed;
 	boolean isVisable;
 	boolean isAlive;
 	Rectangle playerHitBox;
-	public static int health = 10;
+	public static int health = 3;
 
 	Player(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		super(x, y, height, width, speed, isVisable, isAlive);
