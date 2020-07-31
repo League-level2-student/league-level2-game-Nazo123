@@ -6,7 +6,7 @@ public class JungleExplorer {
 
 	public final static int WIDTH = 1400;
 	public final static int HEIGHT = 750;
-	int highScore;
+
 	GamePanel gamePanel;
 	JFrame frame;
 
