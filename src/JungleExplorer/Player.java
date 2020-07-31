@@ -1,6 +1,7 @@
 package JungleExplorer;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ public class Player extends GameObject {
 	boolean isAlive;
 	Rectangle playerHitBox;
 	public static int health = 3;
+
 
 	Player(int x, int y, int height, int width, int speed, boolean isVisable, boolean isAlive) {
 		super(x, y, height, width, speed, isVisable, isAlive);

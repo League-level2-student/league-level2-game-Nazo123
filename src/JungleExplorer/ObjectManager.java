@@ -28,12 +28,12 @@ public class ObjectManager {
 
 			if (!checkStanding()) {
 				if (stand == true)
-					System.out.println("Not standing");
+					
 				stand = false;
 				player.ifAir = true;
 			} else {
 				if (stand == false)
-					System.out.println("standing");
+				
 				stand = true;
 				player.ifAir = false;
 
@@ -205,7 +205,7 @@ public class ObjectManager {
 		levelI.add(b.createBox(0, 300, 525, 50));
 		levelI.add(b.createBox(0, 250, 425, 50));
 		levelI.add(b.createBox(0, 200, 325, 50));
-		System.out.println(levelI.size());
+	
 
 		// debug_rectangle("lI0", levelI.get(0).get(2));
 		// debug_rectangle("lI1", levelI.get(1).get(2));
@@ -259,14 +259,14 @@ public class ObjectManager {
 		levelIV.add(b.createBox(325, 375, 50, 50));
 		levelIV.add(b.createBox(425, 275, 50, 50));
 		levelIV.add(b.createBox(0, 120, 300, 25));
-		levelIV.add(b.createBox(1250-10, -150, 50, 250));
+		levelIV.add(b.createBox(1250-10, -150, 50, 500));
 		levelIV.add(b.createBox(750, 526, 551, 50));
 		levelIV.add(b.createBox(1390, -4000, 300, 9000));
 		levelIV.add(b.createBox(750, 0, 40, 526));
 		levelIV.add(b.createBox(750, 450, 110, 80));
 		levelIV.add(b.createBox(950, 300, 150, 50));
 		levelIV.add(b.createBox(1100, 250, 150, 100));
-		levelIV.add(b.createBox(1240, 200, 210, 150));
+		levelIV.add(b.createBox(1240, 200, 210, 200));
 
 		return levelIV;
 	}
@@ -305,7 +305,7 @@ public class ObjectManager {
 		}
 		for(int i = 0; i<GamePanel.coins.size(); i++) {
 			if(GamePanel.coins.get(i).hitbox.intersects(player.playerHitBox)&&GamePanel.coins.get(i).active) {
-GamePanel.coin++;				
+	
 GamePanel.coins.get(i).collected = true;
 			}
 		}

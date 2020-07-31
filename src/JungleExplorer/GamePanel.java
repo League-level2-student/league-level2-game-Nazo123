@@ -27,6 +27,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static boolean aneedImage = true;
 	public static int highScore = 0;
 	public static boolean agotImage = false;
+	int firstRun = 0;
 	private AudioClip sound;
 	public static BufferedImage image;
 	public static boolean needImage = true;
@@ -35,12 +36,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static boolean hneedImage = true;
 	public static boolean hgotImage = false;
 	public static int counter = 0;
-	public static int coin = 0;
-	public static Rectangle key = new Rectangle(50,75,25,50);
+	public static Rectangle key = new Rectangle(50, 75, 25, 50);
 	public static boolean gotKey = false;
 	int doorX = 30;
 	boolean win = false;
-	int doorY= 60;
+	int doorY = 60;
 	Timer bulletTimer;
 	final static int MENU = 0;
 	final static int INT = 1;
@@ -55,15 +55,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer frameRate;
 	Font intTitleFont;
 	Font intTextFont;
+	Font deathFont;
 	Player player;
 	ObjectManager manager;
 	Rectangle door = new Rectangle(doorX, doorY, 100, 150);
 
 	GamePanel() {
-		coins.add(new Coin(1240,110,50,50,true,false));
+		coins.add(new Coin(1240, 110, 50, 50, true, false));
 		player = new Player(50, 525, 125, 75, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
 		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
+		deathFont = new Font("Courier", Font.BOLD, 70);
 		frameRate = new Timer(1000 / 60, this);
 		bulletTimer = new Timer(2000, this);
 		frameRate.start();
@@ -90,20 +92,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void drawIntState(Graphics g) {
-		
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setFont(intTitleFont);
 		g.setColor(Color.WHITE);
 		g.drawString("How To Play", 400, 225);
 		g.setFont(intTextFont);
-		g.drawString("       To move you must use the a and s keys or the left and right arrow keys. To ", 75, 350);
+		g.drawString("       To move you must use the or the left and right arrow keys. To ", 75, 350);
 
 		g.drawString("jump simply press space. Your goal is to reach the door at the end of the level and", 75, 425);
-		g.drawString("presss the up arrow or w. There are obstacles such as projectiles, gaps in the floor, ", 75, 500);
-		g.drawString("and fire hot rocks. You have 3 attempts to see how far you can go. There are a total of 5 levels!", 75,
-				575);
-
+		g.drawString("presss the up arrow. There are obstacles such as projectiles, gaps in the floor, ", 75, 500);
+		g.drawString("and fire hot rocks. At the end there is a boss. To kill it you must simply jump on his head.", 75,575);
+		g.drawString("You have limmited lives to see how far you can go. There are a total of 5 levels!", 75,650);
 	}
 
 	void drawLevelIState(Graphics g) {
@@ -173,7 +174,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
-	void drawLevelIIIState(Graphics g) {		
+	void drawLevelIIIState(Graphics g) {
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setColor(Color.yellow);
@@ -188,19 +189,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(1130, 330, 50, 50);
 		g.fillRect(150, 200, 900, 50);
 
-		
-		
-
 		g.setColor(Color.gray);
-		
-		for(int i = 0; i<pads.size();i++) {
-			if(pads.get(i).active) {
+
+		for (int i = 0; i < pads.size(); i++) {
+			if (pads.get(i).active) {
 				g.setColor(Color.RED);
-			}
-			else {
+			} else {
 				g.setColor(Color.ORANGE);
 			}
-		g.fillRect(pads.get(i).x,pads.get(i).y,pads.get(i).width,pads.get(i).height);
+			g.fillRect(pads.get(i).x, pads.get(i).y, pads.get(i).width, pads.get(i).height);
 		}
 		coins.get(1).draw(g);
 		for (int i = 0; i < player.health; i++) {
@@ -213,22 +210,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		}
 	}
-	void drawLevelIVState(Graphics g) {		
+
+	void drawLevelIVState(Graphics g) {
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setColor(Color.yellow);
 		g.fillRect(doorX, doorY, 100, 150);
 		g.setColor(Color.GREEN);
-		if(gotKey) {
+		if (gotKey) {
 
 			g.fillRect(50, 650, 350, 50);
 
-		}
-		else {
+		} else {
 			g.setColor(Color.black);
-			g.fillRect(50,75,25,50);
+			g.fillRect(50, 75, 25, 50);
 			g.setColor(Color.GREEN);
-			g.fillRect(1250-10, 0, 50, 200);
+			g.fillRect(1250 - 10, 0, 50, 200);
 			g.fillRect(0, 120, 300, 25);
 		}
 		g.fillRect(750, 450, 110, 80);
@@ -236,29 +233,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(350, 650, 50, 50);
 		g.fillRect(50, 600, 50, 50);
 		g.fillRect(0, 450, 50, 50);
-	g.fillRect(425, 275, 50, 50);
-	g.fillRect(750, 526, 550, 50);
-	g.fillRect(750, 0, 40, 536);
-	g.fillRect(1390, -200, 300, 1000);
-	g.fillRect(950, 300, 150, 50);
-	g.fillRect(1100, 250, 150, 100);
-	g.fillRect(1240, 200, 210, 150);
-	
+		g.fillRect(425, 275, 50, 50);
+		g.fillRect(750, 526, 550, 50);
+		g.fillRect(750, 0, 40, 536);
+		g.fillRect(1390, -200, 300, 1000);
+		g.fillRect(950, 300, 150, 50);
+		g.fillRect(1100, 250, 150, 100);
+		g.fillRect(1240, 200, 210, 150);
 
 		g.setColor(Color.gray);
-		
+
 		g.fillRect(890, 526, 20, 30);
 		g.fillRect(1040, 526, 20, 30);
 		g.fillRect(1190, 526, 20, 30);
-	
-		for(int i = 0; i<pads.size();i++) {
-			if(pads.get(i).active) {
+
+		for (int i = 0; i < pads.size(); i++) {
+			if (pads.get(i).active) {
 				g.setColor(Color.RED);
-			}
-			else {
+			} else {
 				g.setColor(Color.ORANGE);
 			}
-		g.fillRect(pads.get(i).x,pads.get(i).y,pads.get(i).width,pads.get(i).height);
+			g.fillRect(pads.get(i).x, pads.get(i).y, pads.get(i).width, pads.get(i).height);
 		}
 		coins.get(1).draw(g);
 		for (int i = 0; i < player.health; i++) {
@@ -271,45 +266,46 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 		}
 	}
-	void drawLevelVState(Graphics g) {		
+
+	void drawLevelVState(Graphics g) {
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 		g.setColor(Color.GREEN);
 		g.fillRect(0, 700, 1400, 100);
 		g.setColor(Color.yellow);
 		g.fillRect(doorX, doorY, 100, 150);
-		if(boss.size()>0) {
+		if (boss.size() > 0) {
 			boss.get(0).draw(g);
 			g.setColor(Color.red);
-			g.fillRect(boss.get(0).x, boss.get(0).y-30, boss.get(0).width, 15);
+			g.fillRect(boss.get(0).x, boss.get(0).y - 30, boss.get(0).width, 15);
 			g.setColor(Color.green);
-			g.fillRect(boss.get(0).x, boss.get(0).y-30, (boss.get(0).width/25)*boss.get(0).heath, 15);
-		
+			g.fillRect(boss.get(0).x, boss.get(0).y - 30, (boss.get(0).width / 25) * boss.get(0).heath, 15);
+
 		}
 		for (int i = 0; i < player.health; i++) {
 			g.drawImage(himage, 1275 - 100 * i, 60, 75, 75, null);
 		}
-		
+
 		player.draw(g);
 	}
+
 	void drawEndState(Graphics g) {
-		if(win) {
-		g.setColor(Color.YELLOW);
-		g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
-		g.setColor(Color.WHITE);
-		g.drawString("You Scored "+score+" This Run!", 600, 200);
-		g.drawString("The Current Highscore Is "+highScore+"!", 600, 400);
-		g.drawString("Click Enter To Play Again!",600, 600);
-		}
-		else {
+		g.setFont(deathFont); 
+		if (win) {
+			g.setColor(Color.YELLOW);
+			g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
+			g.setColor(Color.BLACK);
+			g.drawString("You Scored " + score + " This Run!", 25, 200);
+			g.drawString("The Current Highscore Is " + highScore + "!", 25, 400);
+			g.drawString("Click Enter To Play Again!", 190, 600);
+		} else {
 			g.setColor(Color.RED);
 			g.fillRect(0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT);
 			g.setColor(Color.BLACK);
-			g.drawString("You FAILED!", 600, 200);
-			g.drawString("Better Luck Next Time!", 600, 400);
-			g.drawString("Click Enter To Play Again!",600, 600);
+			g.drawString("You FAILED!", 525, 200);
+			g.drawString("Better Luck Next Time!", 250, 400);
+			g.drawString("Double Click Enter To Play Again!", 25, 600);
 		}
-		
 
 	}
 
@@ -318,8 +314,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	void updateLevelIState() {
+	
 
+doorX = 30;
+doorY=60;
 		manager.update();
+		if(firstRun==0) {
+			player.health=3;
+			firstRun=1;
+		}
 		if (player.lose) {
 			currentState = END;
 		}
@@ -338,30 +341,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			currentState = END;
 		}
 	}
+
 	void updateLevelIVState() {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
 		}
 	}
+
 	void updateLevelVState() {
 		manager.update();
 		if (player.lose) {
 			currentState = END;
 		}
-		if(boss.size()>0) {
-		if(boss.get(0).heath==0) {
-			boss.clear();
-			player.x=100;
-			player.y=600;
-			doorX=650;
-			doorY=550;
-		}
+		if (boss.size() > 0) {
+			if (boss.get(0).heath == 0) {
+				boss.clear();
+				win = true;
+				player.x = 100;
+				player.y = 600;
+				doorX = 650;
+				doorY = 550;
+			}
 		}
 	}
 
 	void updateEndState() {
-
+sound.stop();
 	}
 
 	void loadImage(String imageFile) {
@@ -390,6 +396,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		if (currentState == MENU) {
 			drawMenuState(g);
 		} else if (currentState == INT) {
@@ -398,14 +405,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			drawLevelIState(g);
 		} else if (currentState == LEVELII) {
 			drawLevelIIState(g);
-		} else if(currentState==LEVELIII) {
-				drawLevelIIIState(g);
-		} else if(currentState==LEVELIV) {
+		} else if (currentState == LEVELIII) {
+			drawLevelIIIState(g);
+		} else if (currentState == LEVELIV) {
 			drawLevelIVState(g);
-	    } 
-		else if(currentState==LEVELV) {
+		} else if (currentState == LEVELV) {
 			drawLevelVState(g);
-	    } else if (currentState == END) {
+		} else if (currentState == END) {
 			drawEndState(g);
 		}
 	}
@@ -425,21 +431,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			updateLevelIIIState();
 		} else if (currentState == LEVELIV) {
 			updateLevelIVState();
-		} 
-		else if (currentState == LEVELV) {
+		} else if (currentState == LEVELV) {
 			updateLevelVState();
-		}else if (currentState == END) {
+		} else if (currentState == END) {
 			updateEndState();
 		}
 		repaint();
 		counter++;
-		if(counter%145==0&&LEVELV!=currentState) {
-playGameTheme();
+		if (counter % 145 == 0 && LEVELV != currentState&&END!=currentState) {
+			playGameTheme();
+		} else if (counter % 260 == 0 && LEVELV == currentState) {
+			playBossTheme();
 		}
-		else if(counter%260==0&&LEVELV==currentState){
-		playBossTheme();
-		}
-door.setBounds(doorX, doorY, 100, 150);
+		door.setBounds(doorX, doorY, 100, 150);
 		for (int i = 0; i < launchers.size(); i++) {
 			if (counter % launchers.get(i).rate == 0) {
 				manager.addProjectile(launchers.get(i).getProjectile());
@@ -447,18 +451,16 @@ door.setBounds(doorX, doorY, 100, 150);
 		}
 		for (int i = 0; i < pads.size(); i++) {
 			if (counter % pads.get(i).rate == 0) {
-				pads.get(i).active=true;
-				pads.get(i).holder=pads.get(i).length;
-			
-			}
-			else {
-				if(pads.get(i).holder<0) {
-					
-				pads.get(i).active=false;
-				pads.get(i).holder--;
-				}
-				else {
-					pads.get(i).active=true;
+				pads.get(i).active = true;
+				pads.get(i).holder = pads.get(i).length;
+
+			} else {
+				if (pads.get(i).holder < 0) {
+
+					pads.get(i).active = false;
+					pads.get(i).holder--;
+				} else {
+					pads.get(i).active = true;
 					pads.get(i).holder--;
 				}
 			}
@@ -466,6 +468,7 @@ door.setBounds(doorX, doorY, 100, 150);
 		}
 
 	}
+
 	public void playGameTheme() {
 		try {
 			sound = JApplet.newAudioClip(getClass().getResource("level.wav"));
@@ -475,12 +478,13 @@ door.setBounds(doorX, doorY, 100, 150);
 			ex.printStackTrace();
 		}
 	}
+
 	public void playBossTheme() {
 		try {
 			sound = JApplet.newAudioClip(getClass().getResource("boss.wav"));
-		sound.stop();
+			sound.stop();
 			sound.play();
-		} catch (Exception ex) { 
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -494,7 +498,7 @@ door.setBounds(doorX, doorY, 100, 150);
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getKeyCode()==KeyEvent.VK_H) {
+		if (e.getKeyCode() == KeyEvent.VK_H) {
 			player.health++;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_UP && door.intersects(player.playerHitBox)) {
@@ -506,8 +510,8 @@ door.setBounds(doorX, doorY, 100, 150);
 			launchers.clear();
 			pads.clear();
 			if (currentState == LEVELII) {
-				coins.get(0).active=false;
-				doorY=doorY+10;
+				coins.get(0).active = false;
+				doorY = doorY + 10;
 				player.x = 100;
 				player.y = 600;
 				manager.lvls.add(manager.createLevelII());
@@ -519,19 +523,18 @@ door.setBounds(doorX, doorY, 100, 150);
 
 			}
 			if (currentState == LEVELIII) {
-				doorX=537;
-				doorY=60; 
-				coins.add(new Coin(60,250,50,50,true,false));
-				pads.add(new hotPad(275,700,125,15,150,25));
-				launchers.add(new projectileLauncher(440,800,30,20,2,10,55));
-				pads.add(new hotPad(1000, 675, 50, 50,200,20));
-				pads.add(new hotPad(1300, 475, 70, 50,70,10));
-				pads.add(new hotPad(150, 200, 125, 20,100,50));
-				pads.add(new hotPad(275, 200, 125, 20,300,150));
-				
-				
-				pads.add(new hotPad(650, 200, 125, 20,100,50));
-				pads.add(new hotPad(775, 200, 125, 20,200,100));
+				doorX = 537;
+				doorY = 60;
+				coins.add(new Coin(60, 250, 50, 50, true, false));
+				pads.add(new hotPad(275, 700, 125, 15, 150, 25));
+				launchers.add(new projectileLauncher(440, 800, 30, 20, 2, 10, 55));
+				pads.add(new hotPad(1000, 675, 50, 50, 200, 20));
+				pads.add(new hotPad(1300, 475, 70, 50, 70, 10));
+				pads.add(new hotPad(150, 200, 125, 20, 100, 50));
+				pads.add(new hotPad(275, 200, 125, 20, 300, 150));
+
+				pads.add(new hotPad(650, 200, 125, 20, 100, 50));
+				pads.add(new hotPad(775, 200, 125, 20, 200, 100));
 				player.x = 30;
 				player.y = 600;
 				manager.lvls.add(manager.createLevelIII());
@@ -539,21 +542,20 @@ door.setBounds(doorX, doorY, 100, 150);
 			}
 			if (currentState == LEVELIV) {
 				player.health++;
-				coins.get(1).active=false;
+				coins.get(1).active = false;
 				player.x = 700;
 				player.y = 600;
-				doorX=1300-10;
-				doorY=50; 
-				launchers.add(new projectileLauncher(215,800,20,20,2,10,87));
+				doorX = 1300 - 10;
+				doorY = 50;
+				launchers.add(new projectileLauncher(215, 800, 20, 20, 2, 10, 87));
 				manager.lvls.add(manager.createLevelIV());
-				pads.add(new hotPad(325, 375, 50, 50,150,25));
-				pads.add(new hotPad(800, 700, 100, 50,200,50));
-				pads.add(new hotPad(1000, 700, 100, 50,100,25));
-				pads.add(new hotPad(1200, 700, 100, 50,200,50));
-				launchers.add(new projectileLauncher(890,526,20,30,2,12,79));
-				launchers.add(new projectileLauncher(1040,526,20,30,2,16,57));
-				launchers.add(new projectileLauncher(1190,526,20,30,2,13,68));
-
+				pads.add(new hotPad(325, 375, 50, 50, 150, 25));
+				pads.add(new hotPad(800, 700, 100, 50, 200, 50));
+				pads.add(new hotPad(1000, 700, 100, 50, 100, 25));
+				pads.add(new hotPad(1200, 700, 100, 50, 200, 50));
+				launchers.add(new projectileLauncher(890, 526, 20, 30, 2, 12, 79));
+				launchers.add(new projectileLauncher(1040, 526, 20, 30, 2, 16, 57));
+				launchers.add(new projectileLauncher(1190, 526, 20, 30, 2, 13, 68));
 
 			}
 			if (currentState == LEVELV) {
@@ -561,26 +563,26 @@ door.setBounds(doorX, doorY, 100, 150);
 				player.health++;
 				player.x = 650;
 				player.y = 600;
-				boss.add(new Boss(1100, 550, 200,150, 4,25));
+				boss.add(new Boss(1100, 550, 200, 150, 4, 25));
 				manager.lvls.add(manager.createLevelV());
-				doorX=-900;
-				doorY=-900; 
-				
+				doorX = -900;
+				doorY = -900;
 
 			}
-			if(currentState==END) {
-				if(coins.get(0).collected) {
-					score=score+50000;
-					
+			if (currentState == END) {
+				if (coins.get(0).collected) {
+					score = score + 50000;
+
 				}
-				if(coins.get(1).collected) {
-					score = score+150000;
+				if (coins.get(1).collected) {
+					score = score + 150000;
 				}
-				score = player.health*250000+1000000-counter*50;
+				score = player.health * 250000 + 1000000 - counter * 50;
+				if (highScore < score) {
+					highScore = score;
+				}
 			}
-			if(highScore<score){
-				highScore=score;
-			}
+
 		}
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU) {
@@ -588,15 +590,22 @@ door.setBounds(doorX, doorY, 100, 150);
 
 			} else if (currentState == INT) {
 				currentState++;
-			}
-			else if(currentState == END) {
-				currentState= LEVELI;
+			} else if (currentState == END) {
+				win=false;
+				gotKey=false;
+				currentState = LEVELI;
+				
+				firstRun=0;
 				player = new Player(50, 525, 125, 75, 10, true, true);
-				counter=0;
-				score=0;
+				player.lose=false;
+				counter = 0;
+				
+				score = 0;
+				key.setBounds(50, 75, 25, 50);
+				doorX=30;
+				doorY=60;
 				manager = new ObjectManager(player);
-			
-			
+
 			}
 		}
 
