@@ -591,6 +591,7 @@ sound.stop();
 			} else if (currentState == INT) {
 				currentState++;
 			} else if (currentState == END) {
+				manager.projectile.clear();
 				win=false;
 				gotKey=false;
 				currentState = LEVELI;
