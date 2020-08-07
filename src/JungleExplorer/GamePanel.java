@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer frameRate;
 	Font intTitleFont;
 	Font intTextFont;
+	Font intScoreFont;
 	Font deathFont;
 	Player player;
 	ObjectManager manager;
@@ -62,9 +63,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	GamePanel() {
 		coins.add(new Coin(1240, 110, 50, 50, true, false));
+		coins.add(new Coin(60, 250, 50, 50, false, false));
 		player = new Player(50, 525, 125, 75, 10, true, true);
 		intTitleFont = new Font("Times New Roman", Font.BOLD, 100);
-		intTextFont = new Font("Times New Roman", Font.PLAIN, 35);
+		intTextFont = new Font("Times New Roman", Font.PLAIN, 30);
+		intScoreFont = new Font("Times New Roman", Font.BOLD, 45);
 		deathFont = new Font("Courier", Font.BOLD, 70);
 		frameRate = new Timer(1000 / 60, this);
 		bulletTimer = new Timer(2000, this);
@@ -99,16 +102,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.WHITE);
 		g.drawString("How To Play", 400, 225);
 		g.setFont(intTextFont);
-		g.drawString("       To move you must use the or the left and right arrow keys. To ", 75, 350);
+		g.drawString("       To move use the or the left and right arrow keys. To jump simply press space.", 50, 325);
 
-		g.drawString("jump simply press space. Your goal is to reach the door at the end of the level and", 75, 425);
-		g.drawString("presss the up arrow. There are obstacles such as projectiles, gaps in the floor, ", 75, 500);
-		g.drawString("and fire hot rocks. At the end there is a boss. To kill it you must simply jump on his head.", 75,575);
-		g.drawString("You have limmited lives to see how far you can go. There are a total of 5 levels!", 75,650);
+		g.drawString("Your goal is to reach the door at the end of the level and presss the up arrow. There are obstacles", 50, 400);
+		g.drawString("such as projectiles, gaps in the floor and fire hot rocks that kill you while red. One level includes a", 50, 475);
+		g.drawString("black switch. Pushing it will cause new blocks to apear, and old ones to be removed. At the end there is a boss. ", 50,550);
+		g.drawString("To kill it you must jump on his head repededly. You have limmited lives to see how far you can go.", 50,625);
+		g.drawString("There are a total of 5 levels! Throught the game there are secret coins to help boost your score.", 50,700);
 	}
+	
+		
 
 	void drawLevelIState(Graphics g) {
-
+		
 		g.setColor(Color.lightGray);
 		g.drawImage(aimage, 0, 0, JungleExplorer.WIDTH, JungleExplorer.HEIGHT, null);
 		g.setColor(Color.yellow);
@@ -119,8 +125,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 700, 450, 100);
 		g.fillRect(-20, 0, 50, 900);
 		g.fillRect(1370, 0, 50, 900);
-		g.fillRect(650, 600, 525, 200);
-		g.fillRect(1250, 475, 120, 75);
+		g.fillRect(650, 650, 525, 200);
+		g.fillRect(1250, 500, 120, 75);
 		g.fillRect(0, 0, 1400, 30);
 		g.fillRect(725, 350, 350, 50);
 		g.fillRect(0, 300, 525, 50);
@@ -132,6 +138,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		player.draw(g);
+g.setFont(intScoreFont);
+g.setColor(Color.blue);
+g.drawString("Score: "+score, 10, 40);
 	}
 
 	void drawLevelIIState(Graphics g) {
@@ -168,6 +177,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		player.draw(g);
+		g.setFont(intScoreFont);
+		g.setColor(Color.blue);
+		g.drawString("Score: "+score, 10, 40);
 		for (int i = 0; i < manager.projectile.size(); i++) {
 			manager.projectile.get(i).draw(g);
 
@@ -205,6 +217,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		player.draw(g);
+		g.setFont(intScoreFont);
+		g.setColor(Color.blue);
+		g.drawString("Score: "+score, 10, 40);
 		for (int i = 0; i < manager.projectile.size(); i++) {
 			manager.projectile.get(i).draw(g);
 
@@ -261,6 +276,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		player.draw(g);
+		g.setFont(intScoreFont);
+		g.setColor(Color.blue);
+		g.drawString("Score: "+score, 10, 40);
 		for (int i = 0; i < manager.projectile.size(); i++) {
 			manager.projectile.get(i).draw(g);
 
@@ -287,9 +305,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}
 
 		player.draw(g);
+		g.setFont(intScoreFont);
+		g.setColor(Color.blue);
+		g.drawString("Score: "+score, 10, 40);
 	}
 
 	void drawEndState(Graphics g) {
+
 		g.setFont(deathFont); 
 		if (win) {
 			g.setColor(Color.YELLOW);
@@ -438,6 +460,19 @@ sound.stop();
 		}
 		repaint();
 		counter++;
+		if(currentState!=END) {
+		score = 40000-counter*3 + player.health * 2000;
+		if (coins.get(0).collected) {
+			score = score + 7500;
+
+		}
+		if (coins.get(1).collected) {
+			score = score + 17500;
+		}
+		if(score<=0) {
+			score = 0;
+		}
+		}
 		if (counter % 145 == 0 && LEVELV != currentState&&END!=currentState) {
 			playGameTheme();
 		} else if (counter % 260 == 0 && LEVELV == currentState) {
@@ -498,10 +533,9 @@ sound.stop();
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_H) {
-			player.health++;
-		}
+
 		if (e.getKeyCode() == KeyEvent.VK_UP && door.intersects(player.playerHitBox)) {
+			player.health++;
 			currentState++;
 			sound.stop();
 			sound.play();
@@ -525,7 +559,7 @@ sound.stop();
 			if (currentState == LEVELIII) {
 				doorX = 537;
 				doorY = 60;
-				coins.add(new Coin(60, 250, 50, 50, true, false));
+				coins.get(1).active=true;
 				pads.add(new hotPad(275, 700, 125, 15, 150, 25));
 				launchers.add(new projectileLauncher(440, 800, 30, 20, 2, 10, 55));
 				pads.add(new hotPad(1000, 675, 50, 50, 200, 20));
@@ -541,7 +575,7 @@ sound.stop();
 
 			}
 			if (currentState == LEVELIV) {
-				player.health++;
+				
 				coins.get(1).active = false;
 				player.x = 700;
 				player.y = 600;
@@ -559,41 +593,53 @@ sound.stop();
 
 			}
 			if (currentState == LEVELV) {
-				player.health++;
-				player.health++;
+			
 				player.x = 650;
 				player.y = 600;
+				if(boss.size()==0) {
 				boss.add(new Boss(1100, 550, 200, 150, 4, 25));
+				}
+				else {
+					boss.get(0).heath = 0;
+				}
 				manager.lvls.add(manager.createLevelV());
 				doorX = -900;
 				doorY = -900;
 
 			}
 			if (currentState == END) {
-				if (coins.get(0).collected) {
-					score = score + 50000;
-
+				
 				}
-				if (coins.get(1).collected) {
-					score = score + 150000;
-				}
-				score = player.health * 250000 + 1000000 - counter * 50;
+			if(win) {
 				if (highScore < score) {
 					highScore = score;
 				}
 			}
+			}
 
-		}
+		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (currentState == MENU) {
 				currentState++;
 
 			} else if (currentState == INT) {
 				currentState++;
+				counter=0;
+			
 			} else if (currentState == END) {
 				manager.projectile.clear();
+				pads.clear();
+				launchers.clear();
 				win=false;
 				gotKey=false;
+				
+				for(int i = 0;i<coins.size();i++) {
+					coins.get(i).active = false;
+					coins.get(i).collected=false;
+				}
+
+				coins.get(0).active = true;
+				
 				currentState = LEVELI;
 				
 				firstRun=0;
@@ -625,6 +671,11 @@ sound.stop();
 
 		}
 
+	}
+
+	private Object boss(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

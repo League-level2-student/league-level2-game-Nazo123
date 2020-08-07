@@ -198,8 +198,8 @@ public class ObjectManager {
 		levelI.add(b.createBox(0, 700, 450, 100));
 		levelI.add(b.createBox(-20, -500, 50, 1900));
 		levelI.add(b.createBox(1370, -1000, 30, 2700));
-		levelI.add(b.createBox(650, 600, 525, 30));
-		levelI.add(b.createBox(1250, 475, 120, 70));
+		levelI.add(b.createBox(650, 650, 525, 30));
+		levelI.add(b.createBox(1250, 500, 120, 75));
 		levelI.add(b.createBox(0, -100, 1400, 130));
 		levelI.add(b.createBox(725, 350, 350, 50));
 		levelI.add(b.createBox(0, 300, 525, 50));
